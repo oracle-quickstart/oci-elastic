@@ -7,9 +7,7 @@ First off you'll need to do some pre deploy setup.  That's all detailed [here](h
 
 Architecture Brief
 ==================
-This deploys an Elasticsearch cluster with 3 master nodes in all 3 ADs and 4 data nodes in 2 ADs. Necessary Elasticsearch [configuration](https://www.elastic.co/guide/en/elasticsearch/reference/current/allocation-awareness.html) is in place to make sure primary and replica of the same same index shard never stored in the same
-
-
+This deploys an Elasticsearch cluster with 3 master nodes in all 3 ADs and 4 data nodes in 2 ADs. Necessary Elasticsearch [configuration](https://www.elastic.co/guide/en/elasticsearch/reference/current/allocation-awareness.html) is in place to make sure primary and replica of the same same index sharda are never stored in the same AD.
 
 OCI LBaaS is used for load balancing index operations onto the data nodes and Kibana access to master nodes, by using 2 different listeners one for Kibana and other for index data access. 
 Currently 200GB additional volume is added to data nodes for index, this can be modified by editing variabes.tf.
