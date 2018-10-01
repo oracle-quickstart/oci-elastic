@@ -36,7 +36,7 @@ OCI LBaaS is used for load balancing index operations onto the data nodes and Ki
 
        terraform plan
 
-### Sample Output of terraform init:
+### Sample Output of terraform plan:
 
 ![](./images/TerraPlan.png)
 
