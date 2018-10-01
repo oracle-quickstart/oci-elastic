@@ -41,8 +41,11 @@ OCI LBaaS is used for load balancing index operations onto the data nodes and Ki
 ![](./images/TerraPlan.png)
 
        terraform apply
-   
-    
+
+### Sample Output of terraform apply:
+
+![](./images/TerraApply.png)
+
 Once the launch is finished use bastion public IP to access the Elasticsearch cluster nodes and use LBaaS IP address to accees 
 Elasticsearch and Kibana as shown below.
 
