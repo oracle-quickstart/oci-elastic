@@ -6,7 +6,9 @@ Quick Start a Highly Available Elasticsearch Cluster on OCI.
 First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/cloud-partners/oci-prerequisites).
 
 ## Architecture Brief
-This deploys an Elasticsearch cluster with 3 master nodes in all 3 ADs and 4 data nodes in 2 ADs. Necessary Elasticsearch [configuration](https://www.elastic.co/guide/en/elasticsearch/reference/current/allocation-awareness.html) is in place to make sure primary and replica of the same same index sharda are never stored in the same AD.
+This deploys an Elasticsearch cluster with 3 master nodes in all 3 ADs and 4 data nodes in 2 ADs. Necessary Elasticsearch [configuration](https://www.elastic.co/guide/en/elasticsearch/reference/current/allocation-awareness.html) is in place to make sure primary and replica of the same same index sharda are never stored in the same AD. 
+
+# Cluster Compute Instances on OCI Console
 
 OCI LBaaS is used for load balancing index operations onto the data nodes and Kibana access to master nodes, by using 2 different listeners one for Kibana and other for index data access. 
 Currently 200GB additional volume is added to data nodes for index, this can be modified by editing variabes.tf.
@@ -33,7 +35,7 @@ Elasticsearch and Kibana as shown below.
 
        http://<LBaaS_IP>:9200/_cat     <==== Elasticsearch URL from browser or use curl intead.
 
-Sample output of "curl -XGET LBaaS_IP:9200" :
+## Sample output of "curl -XGET LBaaS_IP:9200" :
        
    ```
        {
@@ -57,6 +59,6 @@ Sample output of "curl -XGET LBaaS_IP:9200" :
 
        http://<LBaaS IP>:5601     <==== Kibana URL from browser 
       
-Sample Kibana Web Page:
+## Sample Kibana Web Page:
 
 ![](./images/KibanaScreen.png)
