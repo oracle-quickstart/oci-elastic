@@ -32,6 +32,8 @@ Once the launch is finished use bastion public IP to access the Elasticsearch cl
 Elasticsearch and Kibana as shown below.
 
        http://<LBaaS IP>:9200/_cat     <==== Elasticsearch URL from browser or use curl intead.
+
+Sample output of "curl <LBaaS IP>:9200" :
        
    ```
        {
