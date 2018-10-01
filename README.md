@@ -22,7 +22,10 @@ How to Launch the Cluster.
 4. Edit variables.tf and change any parameter values like VM/BM, LBaaS shape and data volume size
 5. Run below terraform commands to deploy the cluster.
    
-   terraform apply
+       terraform init
+       terraform plan
+       terraform apply
+   
     
 Once the launchs is finished use bastion public IP to access the Elasticsearch cluster nodes and use LBaaS IP address to accees 
 Elasticsearch and Kibana as shown below.
