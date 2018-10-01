@@ -28,7 +28,7 @@ LBaaS is launched into public subnet with public IP, this can be modified by mod
        terraform apply
    
     
-Once the launchs is finished use bastion public IP to access the Elasticsearch cluster nodes and use LBaaS IP address to accees 
+Once the launch is finished use bastion public IP to access the Elasticsearch cluster nodes and use LBaaS IP address to accees 
 Elasticsearch and Kibana as shown below.
 
        http://<LBaaS IP>:9200/_cat     <==== Elasticsearch URL from browser or use curl intead.
