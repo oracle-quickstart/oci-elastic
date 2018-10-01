@@ -59,4 +59,4 @@ Sample output of "curl -XGET LBaaS_IP:9200" :
       
 Sample Kibana Web Page:
 
-![](./image/Screen%Shot%2018-10-01%at%18.28.38.png)
+![](./image/KibanaScreen.png)
