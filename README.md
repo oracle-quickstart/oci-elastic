@@ -18,7 +18,10 @@ How to Launch the Cluster.
 =========================
 1. Download files to your local machine with Terraform installed 
 2. Edit env-vars file and fill your OCI credentials
-3. Exceute . ./env-vars to set OCI crendials in your environment 
+3. Exceute below script to set OCI crendials in your environment 
+
+       terraform init
+
 4. Edit variables.tf and change any parameter values like VM/BM, LBaaS shape and data volume size
 5. Run below terraform commands to deploy the cluster.
    
