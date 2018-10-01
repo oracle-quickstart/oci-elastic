@@ -55,5 +55,8 @@ Sample output of "curl -XGET LBaaS_IP:9200" :
        }
    ```
 
-       http://<LBaaS IP>:5601        <==== Kibana URL from browser 
+       http://<LBaaS IP>:5601     <==== Kibana URL from browser 
+      
+Sample Kibana Web Page:
 
+   
