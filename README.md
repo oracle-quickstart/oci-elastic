@@ -1,9 +1,13 @@
+# OCI Elasticsearch Quick Start
 
 Quick Start a Highly Available Elasticsearch Cluster on OCI. 
 
+## Prerequisites
+First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/cloud-partners/oci-prerequisites).
+
 Architecture Brief
 ==================
-This deploys an Elastic cluster with 3 master nodes in all 3 ADs and 4 data nodes in 2 ADs. Necessary Elasticsearch is configured(parameter "cluster.routing.allocation.awareness.attributes")to make sure primary and replica of the same same index shard never stored in the same AD. 
+This deploys an Elastic cluster with 3 master nodes in all 3 ADs and 4 data nodes in 2 ADs. Necessary Elasticsearch is configured(parameter "cluster.routing.allocation.awareness.attributes")to make sure primary and replica of the same same index shard never stored in the same AD. Below 
 
 OCI LBaaS is used for load balancing index operations onto the data nodes and Kibana access to master nodes, by using 2 different listeners one for Kibana and other for index data access. 
 Currently 200GB additional volume is added to data nodes for index, this can be modified by editing variabes.tf.
