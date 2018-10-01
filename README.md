@@ -78,3 +78,13 @@ Elasticsearch and Kibana as shown below.
 ### Sample Kibana Web Page:
 
 ![](./images/KibanaScreen.png)
+
+## How to Delete the Cluster. 
+
+From the terraform directory where the files were downloaded to, run below command to delete the entire Cluster.
+
+       terraform destroy
+       
+### Sample Output of terraform destroy:
+
+![](./images/TerraDestroy.png)
