@@ -34,24 +34,24 @@ Elasticsearch and Kibana as shown below.
        http://<LBaaS IP>:9200/_cat     <==== Elasticsearch URL from browser or use curl intead.
        
 schandy-Mac:ES-PHX schandy$ curl -XGET 129.213.188.9:9200/
-{
-  "name" : "esdatanode1",
-  "cluster_name" : "oci-es-cluster",
-  "cluster_uuid" : "HQoVo6LFQqmQcaViNyyQ7w",
-  "version" : {
-    "number" : "6.4.0",
-    "build_flavor" : "default",
-    "build_type" : "rpm",
-    "build_hash" : "595516e",
-    "build_date" : "2018-08-17T23:18:47.308994Z",
-    "build_snapshot" : false,
-    "lucene_version" : "7.4.0",
-    "minimum_wire_compatibility_version" : "5.6.0",
-    "minimum_index_compatibility_version" : "5.0.0"
-  },
-  "tagline" : "You Know, for Search"
-}
-schandy-Mac:ES-PHX schandy$ 
+       {
+         "name" : "esdatanode1",
+         "cluster_name" : "oci-es-cluster",
+         "cluster_uuid" : "HQoVo6LFQqmQcaViNyyQ7w",
+         "version" : {
+           "number" : "6.4.0",
+           "build_flavor" : "default",
+           "build_type" : "rpm",
+           "build_hash" : "595516e",
+           "build_date" : "2018-08-17T23:18:47.308994Z",
+           "build_snapshot" : false,
+           "lucene_version" : "7.4.0",
+           "minimum_wire_compatibility_version" : "5.6.0",
+           "minimum_index_compatibility_version" : "5.0.0"
+         },
+         "tagline" : "You Know, for Search"
+       }
+       schandy-Mac:ES-PHX schandy$ 
 
        http://<LBaaS IP>:5601        <==== Kibana URL from browser 
 
