@@ -34,6 +34,7 @@ Elasticsearch and Kibana as shown below.
        http://<LBaaS IP>:9200/_cat     <==== Elasticsearch URL from browser or use curl intead.
        
 schandy-Mac:ES-PHX schandy$ curl -XGET 129.213.188.9:9200/
+   ```
        {
          "name" : "esdatanode1",
          "cluster_name" : "oci-es-cluster",
@@ -52,6 +53,7 @@ schandy-Mac:ES-PHX schandy$ curl -XGET 129.213.188.9:9200/
          "tagline" : "You Know, for Search"
        }
        schandy-Mac:ES-PHX schandy$ 
+   ```
 
        http://<LBaaS IP>:5601        <==== Kibana URL from browser 
 
