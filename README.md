@@ -12,7 +12,7 @@ This deploys an Elasticsearch cluster with 3 master nodes in all 3 ADs and 4 dat
 
 ![](./images/ClusterNodes.png)
 
-OCI LBaaS is used for load balancing index operations onto the data nodes and Kibana access to master nodes, by using 2 different listeners one for Kibana and other for index data access. LBaaS is launched into public subnet with public IP, this can be modified by modifying the lbaas.tf to make it private LBaaS.
+OCI LBaaS is used for load balancing index operations onto the data nodes and Kibana access to master nodes, by using 2 different listeners one for Kibana and other for index data access, backed by backend set with master node backends and data node backends respectively. LBaaS is launched into public subnet with public IP, this can be modified by modifying the lbaas.tf to make it private LBaaS.
 
 ## Load Balancer on OCI Console
 
