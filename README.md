@@ -18,7 +18,7 @@ LBaaS is launched into public subnet with public IP, this can be modified by mod
 2. Edit env-vars file and fill your OCI credentials
 3. Exceute below script to set OCI crendials in your environment 
 
-       terraform init
+       . ./env-vars
 
 4. Edit variables.tf and change any parameter values like VM/BM, LBaaS shape and data volume size
 5. Run below terraform commands to deploy the cluster.
