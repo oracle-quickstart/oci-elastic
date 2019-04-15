@@ -71,11 +71,11 @@ variable "LBSubnetAD2CIDR" {
 }
 
 variable "ESBootStrap" {
-  default = "../scripts/ESBootStrap.sh"
+  default = "./scripts/ESBootStrap.sh"
 }
 
 variable "BastionBootStrap" {
-  default = "../scripts/BastionBootStrap.sh"
+  default = "./scripts/BastionBootStrap.sh"
 }
 
 variable "backend_set_health_checker_interval_ms" {
