@@ -31,13 +31,17 @@ variable "lb_shape" {
 variable "InstanceImageOCID" {
   type = "map"
 
+  // https://docs.cloud.oracle.com/iaas/images/image/cf34ce27-e82d-4c1a-93e6-e55103f90164/
+// Oracle-Linux-7.6-2019.03.22-1
+variable "images" {
+  type = "map"
+
   default = {
-    // See https://docs.us-phoenix-1.oraclecloud.com/images/
-    // Oracle-provided image "Oracle-Linux-7.4-2018.02.21-1"
-    us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaasez4lk2lucxcm52nslj5nhkvbvjtfies4yopwoy4b3vysg5iwjra"
-    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaa2tq67tvbeavcmioghquci6p3pvqwbneq3vfy7fe7m7geiga4cnxa"
-    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaakzrywmh7kwt7ugj5xqi5r4a7xoxsrxtc7nlsdyhmhqyp7ntobjwq"
-    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaalsdgd47nl5tgb55sihdpqmqu2sbvvccjs6tmbkr4nx2pq5gkn63a"
+    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa2n5z4nmkqjf27btkbdibflwvximz5i3rsz57c3gowckozrdshnua"
+    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaavxqdkuyamlnrdo3q7qa7q3tsd6vnyrxjy3nmdbpv7fs7um53zh5q"
+    us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaapxvrtwbpgy3lchk2usn462ekarljwg4zou2acmundxlkzdty4bjq"
+    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaaaxnnrqke453ur5katouvfn2i6oweuwpixx6mm5e4nqtci7oztx5a"
+    ca-toronto-1   = "ocid1.image.oc1.ca-toronto-1.aaaaaaaaqopv4wgbh54jrqoa4bjpkng2y2npzoe2jaj5pdne37ljdxbbbdka"
   }
 }
 
@@ -70,11 +74,11 @@ variable "LBSubnetAD2CIDR" {
 }
 
 variable "ESBootStrap" {
-  default = "./userdata/ESBootStrap.sh"
+  default = "../scripts/ESBootStrap.sh"
 }
 
 variable "BastionBootStrap" {
-  default = "./userdata/BastionBootStrap.sh"
+  default = "../scripts/BastionBootStrap.sh"
 }
 
 variable "backend_set_health_checker_interval_ms" {
@@ -90,7 +94,7 @@ variable "ESDataPort" {
 }
 
 variable "create_timeout" {
-  default ="60000m"
+  default = "60000m"
 }
 
 variable "DataVolSize" {
