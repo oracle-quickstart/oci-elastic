@@ -1,5 +1,5 @@
 #! /bin/bash 
-##ES Master/Data Nodes boot starp
+##ES Master/Data Nodes boot strap
 esmasternode1=`host esmasternode1.privad1|awk '{print $4}'`
 esmasternode2=`host esmasternode2.privad2|awk '{print $4}'`
 esmasternode3=`host esmasternode3.privad3|awk '{print $4}'`
@@ -33,7 +33,7 @@ mkdir /elasticsearch
 echo "/dev/vgdata/lvdata  /elasticsearch  ext4  defaults,_netdev  0 0" >>/etc/fstab
 mount -a 
 yum install -y java 
-yum install -y https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.4.0.rpm
+yum install -y https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.7.1.rpm
 mkdir /etc/systemd/system/elasticsearch.service.d
 echo "[Service]" >>/etc/systemd/system/elasticsearch.service.d/override.conf
 echo "LimitMEMLOCK=infinity" >>/etc/systemd/system/elasticsearch.service.d/override.conf
@@ -71,8 +71,8 @@ systemctl restart firewalld
 MasterNodeFunc()
 {
 yum install -y java 
-yum install -y https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.4.0.rpm
-yum install -y https://artifacts.elastic.co/downloads/kibana/kibana-6.4.1-x86_64.rpm
+yum install -y https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.7.1.rpm
+yum install -y https://artifacts.elastic.co/downloads/kibana/kibana-6.7.1-x86_64.rpm
 mkdir /etc/systemd/system/elasticsearch.service.d
 echo "[Service]" >>/etc/systemd/system/elasticsearch.service.d/override.conf
 echo "LimitMEMLOCK=infinity" >>/etc/systemd/system/elasticsearch.service.d/override.conf
