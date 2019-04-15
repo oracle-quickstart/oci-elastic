@@ -28,12 +28,9 @@ variable "lb_shape" {
   default = "100Mbps"
 }
 
-variable "InstanceImageOCID" {
-  type = "map"
-
-  // https://docs.cloud.oracle.com/iaas/images/image/cf34ce27-e82d-4c1a-93e6-e55103f90164/
+// https://docs.cloud.oracle.com/iaas/images/image/cf34ce27-e82d-4c1a-93e6-e55103f90164/
 // Oracle-Linux-7.6-2019.03.22-1
-variable "images" {
+variable "InstanceImageOCID" {
   type = "map"
 
   default = {
