@@ -1,4 +1,4 @@
-# oci-elastic
+# simple
 Terraform module that deploys Elasticsearch, Kibana, and Logstash on a VM.
 
 ## Prerequisites
