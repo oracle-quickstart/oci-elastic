@@ -30,7 +30,7 @@ variable "lb_shape" {
 
 // https://docs.cloud.oracle.com/iaas/images/image/cf34ce27-e82d-4c1a-93e6-e55103f90164/
 // Oracle-Linux-7.6-2019.05.14-0
-variable "images" {
+variable "InstanceImageOCID" {
   type = "map"
 
   default = {
