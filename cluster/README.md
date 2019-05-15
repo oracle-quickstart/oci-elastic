@@ -1,4 +1,4 @@
-# oci-elastic
+# cluster
 
 Deploys a highly available Elasticsearch cluster.
 
