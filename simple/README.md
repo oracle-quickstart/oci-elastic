@@ -2,12 +2,12 @@
 Terraform module that deploys Elasticsearch, Kibana, and Logstash on a VM.
 
 ## Prerequisites
-First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/cloud-partners/oci-prerequisites).
+First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
 
 ## Clone the Module
 Now, you'll want a local copy of this repo.  You can make that with the commands:
 
-    git clone https://github.com/oci-quickstart/oci-elastic.git
+    git clone https://github.com/oracle/oci-quickstart-elastic.git
     cd oci-elastic/simple
     ls
 
