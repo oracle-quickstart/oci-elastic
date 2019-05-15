@@ -1,9 +1,9 @@
 # cluster
 
-Deploys a highly available Elasticsearch cluster.
+This is a Terraform module that deploys a highly available Elastic cluster.
 
 ## Prerequisites
-First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/cloud-partners/oci-prerequisites).
+First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
 
 ## Architecture Brief
 
