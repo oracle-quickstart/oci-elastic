@@ -1,4 +1,4 @@
-# oci-quickstart-elastic
+# oci-elastic
 
 These are Terraform modules that deploy [Elastic](https://www.elastic.co/products/) on [Oracle Cloud Infrastructure (OCI)](https://cloud.oracle.com/en_US/cloud-infrastructure).  They are developed jointly by Oracle and Elastic.
 
