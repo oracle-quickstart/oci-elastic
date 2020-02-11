@@ -1,4 +1,5 @@
 #! /bin/bash 
+sleep 30
 ##ES Master/Data Nodes boot strap
 esmasternode1=`host esmasternode1.privatenet|awk '{print $4}'`
 esmasternode2=`host esmasternode2.privatenet|awk '{print $4}'`
@@ -48,7 +49,7 @@ mv /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.ori
 echo "cluster.name: oci-es-cluster" >>/etc/elasticsearch/elasticsearch.yml
 echo "node.name: ${HOSTNAME}" >>/etc/elasticsearch/elasticsearch.yml
 echo "network.host: $local_ip" >>/etc/elasticsearch/elasticsearch.yml
-echo "discovery.zen.ping.unicast.hosts: ["$esmasternode1","$esmasternode2","$esmasternode3","$esdatanode1","$esdatanode2","$esdatanode3","$esdatanode4"]" >>/etc/elasticsearch/elasticsearch.yml 
+echo "discovery.zen.ping.unicast.hosts: ["$esmasternode1","$esmasternode2","$esmasternode3","$esdatanode1","$esdatanode2","$esdatanode3"]" >>/etc/elasticsearch/elasticsearch.yml 
 echo "path.data: /elasticsearch/data" >>/etc/elasticsearch/elasticsearch.yml
 echo "path.logs: /elasticsearch/log" >>/etc/elasticsearch/elasticsearch.yml
 echo "discovery.zen.minimum_master_nodes: 2" >>/etc/elasticsearch/elasticsearch.yml
@@ -87,7 +88,7 @@ mv /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.ori
 echo "cluster.name: oci-es-cluster" >>/etc/elasticsearch/elasticsearch.yml
 echo "node.name: ${HOSTNAME}" >>/etc/elasticsearch/elasticsearch.yml
 echo "network.host: $local_ip" >>/etc/elasticsearch/elasticsearch.yml
-echo "discovery.zen.ping.unicast.hosts: ["$esmasternode1","$esmasternode2","$esmasternode3","$esdatanode1","$esdatanode2","$esdatanode3","$esdatanode4"]" >>/etc/elasticsearch/elasticsearch.yml
+echo "discovery.zen.ping.unicast.hosts: ["$esmasternode1","$esmasternode2","$esmasternode3","$esdatanode1","$esdatanode2","$esdatanode3"]" >>/etc/elasticsearch/elasticsearch.yml
 echo "path.data: /elasticsearch/data" >>/etc/elasticsearch/elasticsearch.yml
 echo "path.logs: /elasticsearch/log" >>/etc/elasticsearch/elasticsearch.yml
 echo "discovery.zen.minimum_master_nodes: 2" >>/etc/elasticsearch/elasticsearch.yml
@@ -119,7 +120,7 @@ case ${HOSTNAME} in
            echo "Running Master Node Function"
            MasterNodeFunc
            ;;
-    esdatanode1|esdatanode2|esdatanode3|esdatanode4)
+    esdatanode1|esdatanode2|esdatanode3)
            echo "Running Data Node Function"
            DataNodeFunc
            ;;
