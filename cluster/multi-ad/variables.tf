@@ -1,12 +1,27 @@
-variable "tenancy_ocid" {}
-variable "user_ocid" {}
-variable "fingerprint" {}
-variable "private_key_path" {}
-variable "region" {}
+variable "tenancy_ocid" {
+}
 
-variable "compartment_ocid" {}
-variable "ssh_public_key" {}
-variable "ssh_private_key" {}
+variable "user_ocid" {
+}
+
+variable "fingerprint" {
+}
+
+variable "private_key_path" {
+}
+
+
+variable "region" {
+}
+
+variable "compartment_ocid" {
+}
+
+variable "ssh_public_key" {
+}
+
+variable "ssh_private_key" {
+}
 
 variable "BastionShape" {
   default = "VM.Standard2.1"
@@ -31,7 +46,7 @@ variable "lb_shape" {
 // https://docs.cloud.oracle.com/iaas/images/image/cf34ce27-e82d-4c1a-93e6-e55103f90164/
 // Oracle-Linux-7.6-2019.05.14-0
 variable "InstanceImageOCID" {
-  type = "map"
+  type = map(string)
 
   default = {
     ap-seoul-1     = "ocid1.image.oc1.ap-seoul-1.aaaaaaaalhbuvdg453ddyhvnbk4jsrw546zslcfyl7vl4oxfgplss3ovlm4q"
@@ -103,3 +118,4 @@ variable "DataVolSize" {
 variable "volume_attachment_attachment_type" {
   default = "iscsi"
 }
+
