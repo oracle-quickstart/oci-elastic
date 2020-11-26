@@ -9,7 +9,7 @@ output "Kibana_URL_via_LBaaS" {
 }
 
 output "Elasticsearch_URL_via_LBaaS" {
-  value = "http://${oci_load_balancer_load_balancer.ES-LB.ip_addresses[0]}::${var.ESDataPort}/"
+  value = "http://${oci_load_balancer_load_balancer.ES-LB.ip_addresses[0]}:${var.ESDataPort}/"
 }
 
 output "generated_ssh_private_key" {

@@ -47,8 +47,8 @@ variable "lb_shape" {
 #
 
 variable "OsImage" {
-#  default = "Oracle-Linux-7.8-2020.09.23-0"
-   default = "Oracle-Linux-7.6-2019.05.14-0"
+  default = "Oracle-Linux-7.8-2020.09.23-0"
+#   default = "Oracle-Linux-7.6-2019.05.14-0"
 }
 
 variable "VCN-CIDR" {
