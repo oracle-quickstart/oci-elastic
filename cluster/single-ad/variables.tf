@@ -44,7 +44,7 @@ variable "InstanceImageOCID" {
     us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaa4bfsnhv2cd766tiw5oraw2as7g27upxzvu7ynqwipnqfcfwqskla"
     us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaavtjpvg4njutkeu7rf7c5lay6wdbjhd4cxis774h7isqd6gktqzoa"
   }
-
+}
 
 variable "VCN-CIDR" {
   default = "192.168.0.0/25"
