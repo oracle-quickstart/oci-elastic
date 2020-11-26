@@ -1,27 +1,14 @@
-variable "tenancy_ocid" {
-}
+variable "tenancy_ocid" {}
 
-variable "user_ocid" {
-}
+variable "user_ocid" {}
 
-variable "fingerprint" {
-}
+variable "fingerprint" {}
 
-variable "private_key_path" {
-}
+variable "private_key_path" {}
 
+variable "region" {}
 
-variable "region" {
-}
-
-variable "compartment_ocid" {
-}
-
-variable "ssh_public_key" {
-}
-
-variable "ssh_private_key" {
-}
+variable "compartment_ocid" {}
 
 variable "BastionShape" {
   default = "VM.Standard2.1"
@@ -71,20 +58,8 @@ variable "PrivSubnetAD1CIDR" {
   default = "192.168.0.16/28"
 }
 
-variable "PrivSubnetAD2CIDR" {
-  default = "192.168.0.32/28"
-}
-
-variable "PrivSubnetAD3CIDR" {
-  default = "192.168.0.48/28"
-}
-
 variable "LBSubnetAD1CIDR" {
   default = "192.168.0.64/28"
-}
-
-variable "LBSubnetAD2CIDR" {
-  default = "192.168.0.80/28"
 }
 
 variable "ESBootStrap" {
