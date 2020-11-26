@@ -175,7 +175,7 @@ variables:
     required: false
     visible: false 
 
- outputs:
+outputs:
 
   BastionPublicIP:
     title: "Bastion Server Public IP"
@@ -200,6 +200,3 @@ variables:
     displayText: "Generated SSH Private Key"
     type: text
     visible: true
-  
-  
-
