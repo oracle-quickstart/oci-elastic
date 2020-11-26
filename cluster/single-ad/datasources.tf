@@ -28,3 +28,9 @@ data "oci_core_private_ips" "BastionPrivateIPs" {
   subnet_id  = oci_core_subnet.BastionSubnetAD1.id
 }
 
+# Gets the Id of a specific OS Images
+data "oci_core_images" "InstanceImageOCID" {
+  #Required
+  compartment_id = var.compartment_ocid
+  display_name   = var.OsImage
+}

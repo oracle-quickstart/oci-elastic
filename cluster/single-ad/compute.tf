@@ -16,7 +16,8 @@ resource "oci_core_instance" "BastionHost" {
   }
 
   source_details {
-    source_id   = var.InstanceImageOCID[var.region]
+  #  source_id   = var.InstanceImageOCID[var.region]
+    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
     source_type = "image"
   }
 
@@ -44,7 +45,8 @@ resource "oci_core_instance" "ESMasterNode1" {
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    #source_id               = var.InstanceImageOCID[var.region]
+    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -73,7 +75,8 @@ resource "oci_core_instance" "ESMasterNode2" {
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    #source_id               = var.InstanceImageOCID[var.region]
+    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -102,7 +105,8 @@ resource "oci_core_instance" "ESMasterNode3" {
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    #source_id               = var.InstanceImageOCID[var.region]
+    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -130,7 +134,8 @@ resource "oci_core_instance" "ESDataNode1" {
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    #source_id               = var.InstanceImageOCID[var.region]
+    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -159,7 +164,8 @@ resource "oci_core_instance" "ESDataNode2" {
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    #source_id               = var.InstanceImageOCID[var.region]
+    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -188,7 +194,8 @@ resource "oci_core_instance" "ESDataNode3" {
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    #source_id               = var.InstanceImageOCID[var.region]
+    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
