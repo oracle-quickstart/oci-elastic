@@ -25,7 +25,7 @@ variableGroups:
 - title: "Optional Configuration"
   visible: true  
   variables:
-  - InstanceImageOCID
+  - OsImage
   - BastionShape
   - MasterNodeShape
   - DataNodeShape
@@ -70,7 +70,7 @@ variables:
     visibile: true
 
   # Optional Configuration  
-  InstanceImageOCID:
+  OsImage:
     type: string
     default: "Oracle-Linux-7.6-2019.05.14-0"
     title: "Instance Image"
