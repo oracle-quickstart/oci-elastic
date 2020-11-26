@@ -72,7 +72,7 @@ variables:
   # Optional Configuration  
   OsImage:
     type: string
-    default: "Oracle-Linux-7.6-2019.05.14-0"
+    default: "Oracle-Linux-7.8-2020.09.23-0"
     title: "Instance Image"
     description: "Instance Image"
     required: false
