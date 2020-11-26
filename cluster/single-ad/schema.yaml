@@ -25,7 +25,7 @@ variableGroups:
 - title: "Optional Configuration"
   visible: true  
   variables:
-  - OsImage
+  - InstanceImageOCID
   - BastionShape
   - MasterNodeShape
   - DataNodeShape
@@ -57,25 +57,23 @@ variables:
 
   region:
     title: "Region"
-    description: "Region where you deploy your Jenkins"
+    description: "Region where you deploy your Elasticsearch and Kibana"
     type: oci:identity:region:name
     required: true
     visibile: true
 
   compartment_ocid:
     title: "Compartment OCID"
-    description: "Comparment where you deploy your Jenkins"
+    description: "Comparment where you deploy your Elasticsearch and Kibana"
     type: oci:identity:compartment:id
     required: true
     visibile: true
 
   # Optional Configuration  
-  OsImage:
+  InstanceImageOCID:
     type: string
-    default: "Oracle-Linux-7.8-2020.09.23-0"
-    title: "Instance Image"
-    description: "Instance Image"
     required: false
+    visible: false
 
   BastionShape:
     type: string
