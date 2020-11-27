@@ -71,13 +71,13 @@ variable "BastionBootStrap" {
 }
 
 variable "elasticsearch_download_url" {
-#  default = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.7.1.rpm"
-  default = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.0-x86_64.rpm"
+  default = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.7.1.rpm"
+#  default = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.0-x86_64.rpm"
 }
 
 variable "kibana_download_url" {
-  default = "https://artifacts.elastic.co/downloads/kibana/kibana-7.10.0-x86_64.rpm"
-#  default = "https://artifacts.elastic.co/downloads/kibana/kibana-6.7.1-x86_64.rpm"
+#  default = "https://artifacts.elastic.co/downloads/kibana/kibana-7.10.0-x86_64.rpm"
+  default = "https://artifacts.elastic.co/downloads/kibana/kibana-6.7.1-x86_64.rpm"
 }
 
 variable "backend_set_health_checker_interval_ms" {

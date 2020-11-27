@@ -100,7 +100,8 @@ echo "node.ingest: false" >>/etc/elasticsearch/elasticsearch.yml
 echo "bootstrap.memory_lock: true" >>/etc/elasticsearch/elasticsearch.yml
 mv /etc/kibana/kibana.yml /etc/kibana/kibana.yml.original 
 echo "server.host: $local_ip" >>/etc/kibana/kibana.yml
-echo "elasticsearch.url: "http://$local_ip:${ESDataPort}"" >>/etc/kibana/kibana.yml
+##echo "elasticsearch.url: "http://$local_ip:${ESDataPort}"" >>/etc/kibana/kibana.yml
+echo "elasticsearch.hosts: ["http://$local_ip:${ESDataPort}"]" >>/etc/kibana/kibana.yml
 chmod 660 /etc/elasticsearch/elasticsearch.yml
 chown root:elasticsearch /etc/elasticsearch/elasticsearch.yml
 systemctl daemon-reload
