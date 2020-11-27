@@ -63,8 +63,8 @@ chown root:elasticsearch /etc/elasticsearch/elasticsearch.yml
 systemctl daemon-reload
 systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
-firewall-offline-cmd --add-port=9200/tcp
-firewall-offline-cmd --add-port=9300/tcp
+firewall-offline-cmd --add-port=${ESDataPort}/tcp
+firewall-offline-cmd --add-port=${ESDataPort2}/tcp
 systemctl restart firewalld
 }
 
@@ -86,7 +86,7 @@ sed -i 's/-Xms1g/-Xms'$memgb'g/' /etc/elasticsearch/jvm.options
 sed -i 's/#MAX_LOCKED_MEMORY/MAX_LOCKED_MEMORY/' /etc/sysconfig/elasticsearch
 mv /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.original
 echo "cluster.name: oci-es-cluster" >>/etc/elasticsearch/elasticsearch.yml
-echo "node.name: ${HOSTNAME}" >>/etc/elasticsearch/elasticsearch.yml
+echo "node.name: $HOSTNAME" >>/etc/elasticsearch/elasticsearch.yml
 echo "network.host: $local_ip" >>/etc/elasticsearch/elasticsearch.yml
 echo "discovery.zen.ping.unicast.hosts: ["$esmasternode1","$esmasternode2","$esmasternode3","$esdatanode1","$esdatanode2","$esdatanode3"]" >>/etc/elasticsearch/elasticsearch.yml
 echo "path.data: /elasticsearch/data" >>/etc/elasticsearch/elasticsearch.yml
@@ -115,7 +115,7 @@ systemctl restart firewalld
 }
 
 ## Select the node as Master/Data and runs relevant function.
-case ${HOSTNAME} in
+case $HOSTNAME in
      esmasternode1|esmasternode2|esmasternode3)
            echo "Running Master Node Function"
            MasterNodeFunc
