@@ -47,7 +47,7 @@ sed -i 's/-Xms1g/-Xms'$memgb'g/' /etc/elasticsearch/jvm.options
 sed -i 's/#MAX_LOCKED_MEMORY/MAX_LOCKED_MEMORY/' /etc/sysconfig/elasticsearch
 mv /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.original
 echo "cluster.name: oci-es-cluster" >>/etc/elasticsearch/elasticsearch.yml
-echo "node.name: ${HOSTNAME}" >>/etc/elasticsearch/elasticsearch.yml
+echo "node.name: $HOSTNAME" >>/etc/elasticsearch/elasticsearch.yml
 echo "network.host: $local_ip" >>/etc/elasticsearch/elasticsearch.yml
 echo "discovery.zen.ping.unicast.hosts: ["$esmasternode1","$esmasternode2","$esmasternode3","$esdatanode1","$esdatanode2","$esdatanode3"]" >>/etc/elasticsearch/elasticsearch.yml 
 echo "path.data: /elasticsearch/data" >>/etc/elasticsearch/elasticsearch.yml
