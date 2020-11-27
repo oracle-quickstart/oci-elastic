@@ -25,6 +25,7 @@ variableGroups:
 - title: "Optional Configuration"
   visible: true  
   variables:
+  - OsImage
   - BastionShape
   - MasterNodeShape
   - DataNodeShape
@@ -157,14 +158,12 @@ variables:
   elasticsearch_download_url:
     title: "Elasticsearch download URL"
     description: "Elasticsearch download URL"
-    default: "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.0-x86_64.rpm"
     type: string
     required: false
 
   kibana_download_url:
     title: "Kibana download URL"
     description: "Kibana download URL"
-    default: "https://artifacts.elastic.co/downloads/kibana/kibana-7.10.0-x86_64.rpm"
     type: string
     required: false
 
