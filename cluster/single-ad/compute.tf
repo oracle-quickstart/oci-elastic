@@ -1,15 +1,3 @@
-data "template_file" "setup_esbootstrap" {
-  template = file("${var.ESBootStrap}")
-
-  vars = {
-    elasticsearch_download_url  = var.elasticsearch_download_url
-    kibana_download_url         = var.kibana_download_url
-    ESDataPort                  = var.ESDataPort
-    ESDataPort2                 = var.ESDataPort2
-    KibanaPort                  = var.KibanaPort
-  }
-}
-
 resource "oci_core_instance" "BastionHost" {
   availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[0]["name"]
   fault_domain = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
@@ -54,7 +42,7 @@ resource "oci_core_instance" "ESMasterNode1" {
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
   #  user_data           = base64encode(file(var.ESBootStrap))
-    user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
@@ -85,7 +73,7 @@ resource "oci_core_instance" "ESMasterNode2" {
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
     #user_data           = base64encode(file(var.ESBootStrap))
-    user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
@@ -116,7 +104,7 @@ resource "oci_core_instance" "ESMasterNode3" {
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
     #user_data           = base64encode(file(var.ESBootStrap))
-    user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
@@ -146,7 +134,7 @@ resource "oci_core_instance" "ESDataNode1" {
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
     #user_data           = base64encode(file(var.ESBootStrap))
-    user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
@@ -177,7 +165,7 @@ resource "oci_core_instance" "ESDataNode2" {
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
     #user_data           = base64encode(file(var.ESBootStrap))
-    user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
@@ -208,7 +196,7 @@ resource "oci_core_instance" "ESDataNode3" {
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
     #user_data           = base64encode(file(var.ESBootStrap))
-    user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
