@@ -1,93 +1,76 @@
-# cluster
+# oci-elastic (cluster/multi-ad)
 
-This is a Terraform module that deploys a highly available Elastic cluster across availability domains.
+This reference architecture shows a cluster (multi-ad) deployment of Elasticsearch and Kibana in Oracle Cloud Infrastructure.
 
 ## Prerequisites
-First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
 
-## Architecture Brief
+- Permission to `manage` the following types of resources in your Oracle Cloud Infrastructure tenancy: `vcns`, `internet-gateways`, `load-balancers`, `route-tables`, `security-lists`, `subnets`, and `instances`.
 
-![](../../images/cluster/Elasticsearch_deployment_architecture_Capture.PNG)
+- Quota to create the following resources: 1 VCN, 3 subnets, 1 Internet Gateway, 1 NAT Gateway, 2 route rules, and 7 compute instances (bastion host, 3 ElasticSearch Master nodes, 4 ElasticSearch Data nodes).
 
-This deploys an Elasticsearch cluster with 3 master nodes in all 3 ADs and 4 data nodes in 2 ADs. Necessary Elasticsearch [configuration](https://www.elastic.co/guide/en/elasticsearch/reference/current/allocation-awareness.html) is in place to make sure primary and replica of the same same index sharda are never stored in the same AD. Currently 200GB additional volume is added to data nodes for index, this can be modified by editing variabes.tf.
+If you don't have the required permissions and quota, contact your tenancy administrator. See [Policy Reference](https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Reference/policyreference.htm), [Service Limits](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/servicelimits.htm), [Compartment Quotas](https://docs.cloud.oracle.com/iaas/Content/General/Concepts/resourcequotas.htm).
 
-### Cluster Compute Instances on OCI Console
+## Deploy Using Oracle Resource Manager
 
-![](../../images/cluster/ClusterNodes.png)
+1. Click [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://console.us-phoenix-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/lfeldman/oci-elastic/raw/master/cluster/multi-ad/resource-manager/oci-elastic-multi-ad.zip)
 
-OCI LBaaS is used for load balancing index operations onto the data nodes and Kibana access to master nodes, by using 2 different listeners one for Kibana and other for index data access, backed by backend set with master node backends and data node backends respectively. LBaaS is launched into public subnet with public IP, this can be modified by modifying the lbaas.tf to make it private LBaaS.
+    If you aren't already signed in, when prompted, enter the tenancy and user credentials.
 
-### Load Balancer on OCI Console
+2. Review and accept the terms and conditions.
 
-![](../../images/cluster/LBaaSscreen.png)
+3. Select the region where you want to deploy the stack.
 
-## How to Launch the Cluster.
-1. Download or clone the files to your local machine with Terraform installed
-2. Edit env-vars file and fill your OCI credentials
-3. Exceute below script to set OCI crendials in your environment
+4. Follow the on-screen prompts and instructions to create the stack.
 
-       . ./env-vars
+5. After creating the stack, click **Terraform Actions**, and select **Plan**.
 
-4. Edit variables.tf and change any parameter values like VM/BM, LBaaS shape and data volume size
-5. Run below terraform commands to deploy the cluster.
+6. Wait for the job to be completed, and review the plan.
 
-       terraform init
+    To make any changes, return to the Stack Details page, click **Edit Stack**, and make the required changes. Then, run the **Plan** action again.
 
-### Sample Output of terraform init:
+7. If no further changes are necessary, return to the Stack Details page, click **Terraform Actions**, and select **Apply**. 
 
-![](../../images/cluster/TerraInit.png)
+## Deploy Using the Terraform CLI
 
-       terraform plan
+### Clone of the repo
+Now, you'll want a local copy of this repo. You can make that with the commands:
 
-### Sample Output of terraform plan:
+    git clone https://github.com/oracle-quickstart/oci-elastic.git
+    cd oci-elastic/cluster/multi-ad
+    ls
 
-![](../../images/cluster/TerraPlan.png)
+### Prerequisites
+First off, you'll need to do some pre-deploy setup.  That's all detailed [here](https://github.com/cloud-partners/oci-prerequisites).
 
-       terraform apply
+Secondly, create a `terraform.tfvars` file and populate with the following information:
 
-### Sample Output of terraform apply:
+```
+# Authentication
+tenancy_ocid         = "<tenancy_ocid>"
+user_ocid            = "<user_ocid>"
+fingerprint          = "<finger_print>"
+private_key_path     = "<pem_private_key_path>"
 
-![](../../images/cluster/TerraApply.png)
+# Region
+region = "<oci_region>"
 
-Once the launch is finished use bastion public IP to access the Elasticsearch cluster nodes and use LBaaS IP address to accees
-Elasticsearch and Kibana as shown below.
+# Compartment
+compartment_ocid = "<compartment_ocid>"
 
-       http://<LBaaS_IP>:9200/_cat     <==== Elasticsearch URL from browser or use curl intead.
+````
 
-### Sample output of "curl -XGET LBaaS_IP:9200" :
+### Create the Resources
+Run the following commands:
 
-   ```
-       {
-         "name" : "esdatanode1",
-         "cluster_name" : "oci-es-cluster",
-         "cluster_uuid" : "HQoVo6LFQqmQcaViNyyQ7w",
-         "version" : {
-           "number" : "6.4.0",
-           "build_flavor" : "default",
-           "build_type" : "rpm",
-           "build_hash" : "595516e",
-           "build_date" : "2018-08-17T23:18:47.308994Z",
-           "build_snapshot" : false,
-           "lucene_version" : "7.4.0",
-           "minimum_wire_compatibility_version" : "5.6.0",
-           "minimum_index_compatibility_version" : "5.0.0"
-         },
-         "tagline" : "You Know, for Search"
-       }
-   ```
+    terraform init
+    terraform plan
+    terraform apply
 
-       http://<LBaaS IP>:5601     <==== Kibana URL from browser
+### Destroy the Deployment
+When you no longer need the deployment, you can run this command to destroy the resources:
 
-### Sample Kibana Web Page:
+    terraform destroy
 
-![](../../images/cluster/KibanaScreen.png)
+## Architecture Diagram
 
-## How to Delete the Cluster.
-
-From the terraform directory where the files were downloaded to, run below command to delete the entire Cluster.
-
-       terraform destroy
-
-### Sample Output of terraform destroy:
-
-![](../../images/cluster/TerraDestroy.png)
+![](./images/Elasticsearch_deployment_architecture_Capture.PNG)

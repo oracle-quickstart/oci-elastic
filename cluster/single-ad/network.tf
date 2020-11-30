@@ -53,8 +53,8 @@ resource "oci_core_security_list" "LBSecList" {
 
   ingress_security_rules {
     tcp_options {
-      max = 9200
-      min = 9200
+      max = var.ESDataPort
+      min = var.ESDataPort
     }
 
     protocol = "6"
@@ -62,8 +62,8 @@ resource "oci_core_security_list" "LBSecList" {
   }
   ingress_security_rules {
     tcp_options {
-      max = 5601
-      min = 5601
+      max = var.KibanaPort
+      min = var.KibanaPort
     }
 
     protocol = "6"
@@ -83,8 +83,8 @@ resource "oci_core_security_list" "PrivSecList" {
 
   ingress_security_rules {
     tcp_options {
-      max = 9200
-      min = 9200
+      max = var.ESDataPort
+      min = var.ESDataPort
     }
 
     protocol = "6"
@@ -92,8 +92,8 @@ resource "oci_core_security_list" "PrivSecList" {
   }
   ingress_security_rules {
     tcp_options {
-      max = 9300
-      min = 9300
+      max = var.ESDataPort2
+      min = var.ESDataPort2
     }
 
     protocol = "6"
