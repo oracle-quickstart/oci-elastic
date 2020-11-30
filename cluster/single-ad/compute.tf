@@ -11,12 +11,13 @@ resource "oci_core_instance" "BastionHost" {
   }
 
   metadata = {
-    ssh_authorized_keys = chomp(file(var.ssh_public_key))
+    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
     user_data           = base64encode(file(var.BastionBootStrap))
   }
 
   source_details {
-    source_id   = var.InstanceImageOCID[var.region]
+    #source_id   = var.InstanceImageOCID[var.region]
+    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
     source_type = "image"
   }
 
@@ -39,12 +40,14 @@ resource "oci_core_instance" "ESMasterNode1" {
   }
 
   metadata = {
-    ssh_authorized_keys = chomp(file(var.ssh_public_key))
-    user_data           = base64encode(file(var.ESBootStrap))
+    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+  #  user_data           = base64encode(file(var.ESBootStrap))
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
+    #source_id               = var.InstanceImageOCID[var.region]
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -68,12 +71,14 @@ resource "oci_core_instance" "ESMasterNode2" {
   }
 
   metadata = {
-    ssh_authorized_keys = chomp(file(var.ssh_public_key))
-    user_data           = base64encode(file(var.ESBootStrap))
+    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    #user_data           = base64encode(file(var.ESBootStrap))
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
+    #source_id               = var.InstanceImageOCID[var.region]
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -97,12 +102,14 @@ resource "oci_core_instance" "ESMasterNode3" {
   }
 
   metadata = {
-    ssh_authorized_keys = chomp(file(var.ssh_public_key))
-    user_data           = base64encode(file(var.ESBootStrap))
+    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    #user_data           = base64encode(file(var.ESBootStrap))
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
+    #source_id               = var.InstanceImageOCID[var.region]
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -125,12 +132,14 @@ resource "oci_core_instance" "ESDataNode1" {
     assign_public_ip = false
   }
   metadata = {
-    ssh_authorized_keys = chomp(file(var.ssh_public_key))
-    user_data           = base64encode(file(var.ESBootStrap))
+    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    #user_data           = base64encode(file(var.ESBootStrap))
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
+    #source_id               = var.InstanceImageOCID[var.region]
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -154,12 +163,14 @@ resource "oci_core_instance" "ESDataNode2" {
   }
 
   metadata = {
-    ssh_authorized_keys = chomp(file(var.ssh_public_key))
-    user_data           = base64encode(file(var.ESBootStrap))
+    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    #user_data           = base64encode(file(var.ESBootStrap))
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
+    #source_id               = var.InstanceImageOCID[var.region]
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -183,12 +194,14 @@ resource "oci_core_instance" "ESDataNode3" {
   }
 
   metadata = {
-    ssh_authorized_keys = chomp(file(var.ssh_public_key))
-    user_data           = base64encode(file(var.ESBootStrap))
+    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    #user_data           = base64encode(file(var.ESBootStrap))
+  #  user_data           = base64encode(data.template_file.setup_esbootstrap.rendered)
   }
 
   source_details {
-    source_id               = var.InstanceImageOCID[var.region]
+    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
+    #source_id               = var.InstanceImageOCID[var.region]
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }

@@ -34,7 +34,7 @@ mkdir /elasticsearch
 echo "/dev/vgdata/lvdata  /elasticsearch  ext4  defaults,_netdev  0 0" >>/etc/fstab
 mount -a 
 yum install -y java 
-yum install -y https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.7.1.rpm
+yum install -y ${elasticsearch_download_url}
 mkdir /etc/systemd/system/elasticsearch.service.d
 echo "[Service]" >>/etc/systemd/system/elasticsearch.service.d/override.conf
 echo "LimitMEMLOCK=infinity" >>/etc/systemd/system/elasticsearch.service.d/override.conf
@@ -47,7 +47,7 @@ sed -i 's/-Xms1g/-Xms'$memgb'g/' /etc/elasticsearch/jvm.options
 sed -i 's/#MAX_LOCKED_MEMORY/MAX_LOCKED_MEMORY/' /etc/sysconfig/elasticsearch
 mv /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.original
 echo "cluster.name: oci-es-cluster" >>/etc/elasticsearch/elasticsearch.yml
-echo "node.name: ${HOSTNAME}" >>/etc/elasticsearch/elasticsearch.yml
+echo "node.name: $HOSTNAME" >>/etc/elasticsearch/elasticsearch.yml
 echo "network.host: $local_ip" >>/etc/elasticsearch/elasticsearch.yml
 echo "discovery.zen.ping.unicast.hosts: ["$esmasternode1","$esmasternode2","$esmasternode3","$esdatanode1","$esdatanode2","$esdatanode3"]" >>/etc/elasticsearch/elasticsearch.yml 
 echo "path.data: /elasticsearch/data" >>/etc/elasticsearch/elasticsearch.yml
@@ -63,8 +63,8 @@ chown root:elasticsearch /etc/elasticsearch/elasticsearch.yml
 systemctl daemon-reload
 systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
-firewall-offline-cmd --add-port=9200/tcp
-firewall-offline-cmd --add-port=9300/tcp
+firewall-offline-cmd --add-port=${ESDataPort}/tcp
+firewall-offline-cmd --add-port=${ESDataPort2}/tcp
 systemctl restart firewalld
 }
 
@@ -72,8 +72,8 @@ systemctl restart firewalld
 MasterNodeFunc()
 {
 yum install -y java 
-yum install -y https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.7.1.rpm
-yum install -y https://artifacts.elastic.co/downloads/kibana/kibana-6.7.1-x86_64.rpm
+yum install -y ${elasticsearch_download_url}
+yum install -y ${kibana_download_url}
 mkdir /etc/systemd/system/elasticsearch.service.d
 echo "[Service]" >>/etc/systemd/system/elasticsearch.service.d/override.conf
 echo "LimitMEMLOCK=infinity" >>/etc/systemd/system/elasticsearch.service.d/override.conf
@@ -86,7 +86,7 @@ sed -i 's/-Xms1g/-Xms'$memgb'g/' /etc/elasticsearch/jvm.options
 sed -i 's/#MAX_LOCKED_MEMORY/MAX_LOCKED_MEMORY/' /etc/sysconfig/elasticsearch
 mv /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.original
 echo "cluster.name: oci-es-cluster" >>/etc/elasticsearch/elasticsearch.yml
-echo "node.name: ${HOSTNAME}" >>/etc/elasticsearch/elasticsearch.yml
+echo "node.name: $HOSTNAME" >>/etc/elasticsearch/elasticsearch.yml
 echo "network.host: $local_ip" >>/etc/elasticsearch/elasticsearch.yml
 echo "discovery.zen.ping.unicast.hosts: ["$esmasternode1","$esmasternode2","$esmasternode3","$esdatanode1","$esdatanode2","$esdatanode3"]" >>/etc/elasticsearch/elasticsearch.yml
 echo "path.data: /elasticsearch/data" >>/etc/elasticsearch/elasticsearch.yml
@@ -100,7 +100,8 @@ echo "node.ingest: false" >>/etc/elasticsearch/elasticsearch.yml
 echo "bootstrap.memory_lock: true" >>/etc/elasticsearch/elasticsearch.yml
 mv /etc/kibana/kibana.yml /etc/kibana/kibana.yml.original 
 echo "server.host: $local_ip" >>/etc/kibana/kibana.yml
-echo "elasticsearch.url: "http://$local_ip:9200"" >>/etc/kibana/kibana.yml
+##echo "elasticsearch.url: "http://$local_ip:${ESDataPort}"" >>/etc/kibana/kibana.yml
+echo "elasticsearch.hosts: ["http://$local_ip:${ESDataPort}"]" >>/etc/kibana/kibana.yml
 chmod 660 /etc/elasticsearch/elasticsearch.yml
 chown root:elasticsearch /etc/elasticsearch/elasticsearch.yml
 systemctl daemon-reload
@@ -108,14 +109,14 @@ systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
 systemctl enable kibana.service
 systemctl start kibana.service
-firewall-offline-cmd --add-port=9200/tcp
-firewall-offline-cmd --add-port=9300/tcp
-firewall-offline-cmd --add-port=5601/tcp
+firewall-offline-cmd --add-port=${ESDataPort}/tcp
+firewall-offline-cmd --add-port=${ESDataPort2}/tcp
+firewall-offline-cmd --add-port=${KibanaPort}/tcp
 systemctl restart firewalld
 }
 
 ## Select the node as Master/Data and runs relevant function.
-case ${HOSTNAME} in
+case $HOSTNAME in
      esmasternode1|esmasternode2|esmasternode3)
            echo "Running Master Node Function"
            MasterNodeFunc

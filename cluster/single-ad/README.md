@@ -1,18 +1,20 @@
-# oci-elastic (cluster/multi-ad)
+# oci-elastic (cluster/single-ad)
 
-This reference architecture shows a cluster (multi-ad) deployment of Elasticsearch and Kibana in Oracle Cloud Infrastructure.
+This reference architecture shows a cluster (single-ad) deployment of Elasticsearch and Kibana in Oracle Cloud Infrastructure.
+
+For details of the architecture, see [_Deploy Elasticsearch and Kibana_](https://docs.oracle.com/en/solutions/deploy-elk/index.html)
 
 ## Prerequisites
 
 - Permission to `manage` the following types of resources in your Oracle Cloud Infrastructure tenancy: `vcns`, `internet-gateways`, `load-balancers`, `route-tables`, `security-lists`, `subnets`, and `instances`.
 
-- Quota to create the following resources: 1 VCN, 3 subnets, 1 Internet Gateway, 1 NAT Gateway, 2 route rules, and 7 compute instances (bastion host, 3 ElasticSearch Master nodes, 4 ElasticSearch Data nodes).
+- Quota to create the following resources: 1 VCN, 3 subnets, 1 Internet Gateway, 1 NAT Gateway, 2 route rules, and 7 compute instances (bastion host, 3 ElasticSearch Master nodes, 3 ElasticSearch Data nodes).
 
 If you don't have the required permissions and quota, contact your tenancy administrator. See [Policy Reference](https://docs.cloud.oracle.com/en-us/iaas/Content/Identity/Reference/policyreference.htm), [Service Limits](https://docs.cloud.oracle.com/en-us/iaas/Content/General/Concepts/servicelimits.htm), [Compartment Quotas](https://docs.cloud.oracle.com/iaas/Content/General/Concepts/resourcequotas.htm).
 
 ## Deploy Using Oracle Resource Manager
 
-1. Click [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://console.us-phoenix-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/oracle-quickstart/oci-elastic/raw/master/cluster/multi-ad/resource-manager/oci-elastic-multi-ad.zip)
+1. Click [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://console.us-phoenix-1.oraclecloud.com/resourcemanager/stacks/create?region=home&zipUrl=https://github.com/oracle-quickstart/oci-elastic/raw/master/cluster/single-ad/resource-manager/oci-elastic-single-ad.zip)
 
     If you aren't already signed in, when prompted, enter the tenancy and user credentials.
 
@@ -36,7 +38,7 @@ If you don't have the required permissions and quota, contact your tenancy admin
 Now, you'll want a local copy of this repo. You can make that with the commands:
 
     git clone https://github.com/oracle-quickstart/oci-elastic.git
-    cd oci-elastic/cluster/multi-ad
+    cd oci-elastic/cluster/single-ad
     ls
 
 ### Prerequisites
@@ -73,4 +75,4 @@ When you no longer need the deployment, you can run this command to destroy the 
 
 ## Architecture Diagram
 
-![](./images/Elasticsearch_deployment_architecture_Capture.PNG)
+![](./images/elk-oci-single-ad.png)

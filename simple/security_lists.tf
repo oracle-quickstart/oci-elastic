@@ -1,14 +1,12 @@
 resource "oci_core_security_list" "ELKSecurityList" {
-  compartment_id = "${var.compartment_ocid}"
-  vcn_id         = "${oci_core_virtual_network.ELKVCN.id}"
+  compartment_id = var.compartment_ocid
+  vcn_id         = oci_core_virtual_network.ELKVCN.id
   display_name   = "ELKSecurityList"
 
-  egress_security_rules = [
-    {
+  egress_security_rules {
       protocol    = "6"
       destination = "0.0.0.0/0"
-    },
-  ]
+  }
 
   ingress_security_rules {
     protocol = "6"
@@ -25,8 +23,8 @@ resource "oci_core_security_list" "ELKSecurityList" {
     source   = "0.0.0.0/0"
 
     tcp_options {
-      max = "9200"
-      min = "9200"
+      max = var.ESDataPort
+      min = var.ESDataPort
     }
   }
 
@@ -35,8 +33,8 @@ resource "oci_core_security_list" "ELKSecurityList" {
     source   = "0.0.0.0/0"
 
     tcp_options {
-      max = "5601"
-      min = "5601"
+      max = var.KibanaPort
+      min = var.KibanaPort
     }
   }
 }

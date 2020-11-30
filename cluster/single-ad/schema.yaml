@@ -1,0 +1,243 @@
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+title: "Deploy Elasticsearch and Kibana in OCI"
+description: "Deploy cluster configuration (single-ad) of Elasticsearch and Kibana in Oracle Cloud Infrastructure."
+stackDescription: "Deploy Elasticsearch and Kibana in OCI"
+informationalText: "To connect to the Kibana UI, copy Kibana_URL_via_LBaaS and paste it to your web browser. To connect to ElasticSearch, copy Elasticsearch_URL_via_LBaaS and paste it to your web browser."
+schemaVersion: 1.1.0
+version: "20201028"
+locale: "en"
+
+variableGroups:
+- title: "General Configuration"
+  visible: false
+  variables:
+  - tenancy_ocid
+
+
+- title: "Required Configuration"
+  visible: true  
+  variables:
+  - compartment_ocid
+  - region
+
+- title: "Optional Configuration"
+  visible: true  
+  variables:
+  - OsImage
+  - BastionShape
+  - MasterNodeShape
+  - DataNodeShape
+  - BootVolSize
+  - DataVolSize
+  - VCN-CIDR
+  - BastSubnetAD1CIDR
+  - PrivSubnetAD1CIDR
+  - LBSubnetAD1CIDR
+  - lb_shape
+  - ESBootStrap
+  - BastionBootStrap
+  - elasticsearch_download_url
+  - kibana_download_url
+  - backend_set_health_checker_interval_ms
+  - KibanaPort
+  - ESDataPort
+  - ESDataPort2
+  - create_timeout
+  - volume_attachment_attachment_type
+
+variables:
+  
+  # General Configuration
+  tenancy_ocid:
+    title: "Tenancy ID"
+    description: "The Oracle Cloud Identifier (OCID) for your tenancy"
+    type: string
+    required: true
+    visibile: false
+
+  region:
+    title: "Region"
+    description: "Region where you deploy your Elasticsearch and Kibana"
+    type: oci:identity:region:name
+    required: true
+    visibile: true
+
+  compartment_ocid:
+    title: "Compartment OCID"
+    description: "Comparment where you deploy your Elasticsearch and Kibana"
+    type: oci:identity:compartment:id
+    required: true
+    visibile: true
+
+  # Optional Configuration 
+  OsImage:
+    type: string
+    default: "Oracle-Linux-7.8-2020.09.23-0"
+    title: "Instance Image"
+    description: "Instance Image"
+    required: false
+
+  BastionShape:
+    type: string
+    default: "VM.Standard2.1"
+    title: "Bastion Shape"
+    description: "Bastion Host Shape"
+    required: false
+
+  MasterNodeShape:
+    type: string
+    default: "VM.Standard2.2"
+    title: "ESMaster Node Shape"
+    description: "ElasticSearch Master Node Shape"
+    required: false
+
+  DataNodeShape:
+    type: string
+    default: "VM.Standard2.4"
+    title: "ESData Node Shape"
+    description: "ElasticSearch Data Node Shape"
+    required: false
+
+  BootVolSize:
+    type: string
+    default: "100"
+    title: "Boot Volume Size (GB)"
+    description: "Boot Volume Size (GB)"
+    required: false   
+
+  DataVolSize:
+    title: "Data Volume Size (GB)"
+    description: "Data Volume Size (GB)"
+    default: "200"
+    type: string
+    required: false 
+
+  VCN-CIDR:
+    type: string
+    required: false
+    default: "192.168.0.0/25"
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "VCN CIDR"
+    description: "A single, contiguous IPv4 CIDR block of your choice for the VCN"
+
+  BastSubnetAD1CIDR:
+    type: string
+    required: false
+    default: "192.168.0.0/28"
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Bastion Subnet AD1 CIDR"
+    description: "Bastion Subnet AD1 CIDR"
+
+  PrivSubnetAD1CIDR:     
+    type: string
+    required: false
+    default: "192.168.0.16/28"
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "Private Subnet AD1 CIDR"
+    description: "Private Subnet AD1 CIDR"
+
+  LBSubnetAD1CIDR:
+    type: string
+    required: false
+    default: "192.168.0.64/28"
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "LB Subnet AD1 CIDR"
+    description: "LB Subnet AD1 CIDR"
+
+  lb_shape:
+    title: "Load Balanacer Shape"
+    description: "Load Balanacer Shape"
+    default: "100Mbps"
+    type: string
+    required: false 
+
+  ESBootStrap:
+    type: string
+    required: false
+    visible: false
+
+  BastionBootStrap:
+    type: string
+    required: false
+    visible: false 
+
+  elasticsearch_download_url:
+    title: "Elasticsearch download URL"
+    description: "Elasticsearch download URL"
+    type: string
+    required: false
+
+  kibana_download_url:
+    title: "Kibana download URL"
+    description: "Kibana download URL"
+    type: string
+    required: false
+
+  backend_set_health_checker_interval_ms:
+    title: "Load Balanacer Health Check interval (ms)"
+    description: "Load Balanacer Health Check interval (ms)"
+    default: "15000"
+    type: string
+    required: false
+
+  KibanaPort:
+    title: "Kibana Port"
+    description: "Kibana Port"
+    default: "5601"
+    type: string
+    required: false
+  
+  ESDataPort:
+    title: "ESData Port 1"
+    description: "Elasticsearch Data Port (Outbound HTTP Traffic)"
+    default: "9200"
+    type: string
+    required: false
+
+  ESDataPort2:
+    title: "ESData Port 2"
+    description: "Elasticsearch Data Port (Internode binary Traffic)"
+    default: "9300"
+    type: string
+    required: false
+
+  create_timeout:
+    type: string
+    required: false
+    visible: false 
+
+  volume_attachment_attachment_type:
+    type: string
+    required: false
+    visible: false 
+
+outputs:
+
+  BastionPublicIP:
+    title: "Bastion Server Public IP"
+    displayText: "Bastion Server Public IP"
+    type: copyableString
+    visible: true
+
+  Kibana_URL_via_LBaaS:
+    title: "Kibana URL"
+    displayText: "Kibana URL via LBaaS"
+    type: copyableString
+    visible: true
+
+  Elasticsearch_URL_via_LBaaS:
+    title: "Elasticsearch URL"
+    displayText: "Elasticsearch URL via LBaaS"
+    type: copyableString
+    visible: true
+  
+  generated_ssh_private_key:
+    title: "Generated SSH Private Key"
+    displayText: "Generated SSH Private Key"
+    type: text
+    visible: true
+  
+  
+
