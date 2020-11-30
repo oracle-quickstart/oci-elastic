@@ -1,0 +1,149 @@
+# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+title: "Deploy Elasticsearch and Kibana in OCI"
+description: "Deploy cluster configuration (simple) of Elasticsearch and Kibana in Oracle Cloud Infrastructure."
+stackDescription: "Deploy Elasticsearch and Kibana in OCI"
+schemaVersion: 1.1.0
+version: "20201028"
+locale: "en"
+
+variableGroups:
+- title: "General Configuration"
+  visible: false
+  variables:
+  - tenancy_ocid
+
+
+- title: "Required Configuration"
+  visible: true  
+  variables:
+  - compartment_ocid
+  - region
+  - availablity_domain_name
+
+- title: "Optional Configuration"
+  visible: true  
+  variables:
+  - OsImage
+  - instance_shape
+  - VCN-CIDR
+  - ELKSubnet-CIDR
+  - elasticsearch_download_url
+  - kibana_download_url
+  - logstash_download_url
+  - KibanaPort
+  - ESDataPort
+
+variables:
+  
+  # General Configuration
+  tenancy_ocid:
+    title: "Tenancy ID"
+    description: "The Oracle Cloud Identifier (OCID) for your tenancy"
+    type: string
+    required: true
+    visibile: false
+
+  region:
+    title: "Region"
+    description: "Region where you deploy your Elasticsearch and Kibana"
+    type: oci:identity:region:name
+    required: true
+    visibile: true
+
+  compartment_ocid:
+    title: "Compartment OCID"
+    description: "Compartment where you deploy your Elasticsearch and Kibana"
+    type: oci:identity:compartment:id
+    required: true
+    visibile: true
+
+  availablity_domain_name:
+    title: "Availability Domain Name"
+    description: "Availability Domain where you deploy your Elasticsearch and Kibana"
+    type: oci:identity:availabilitydomain:name
+    required: true
+    dependsOn:
+      compartmentId: ${compartment_ocid}
+    visible: complexExpression
+
+  # Optional Configuration 
+  OsImage:
+    type: string
+    default: "Oracle-Linux-7.8-2020.09.23-0"
+    title: "Instance Image"
+    description: "Instance Image"
+    required: false
+
+  instance_shape:
+    type: string
+    default: "VM.Standard2.4"
+    title: "ELK Instance Shape"
+    description: "ELK Instance Shape"
+    required: false
+
+  VCN-CIDR:
+    type: string
+    required: false
+    default: "192.168.0.0/25"
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "VCN CIDR"
+    description: "A single, contiguous IPv4 CIDR block of your choice for the VCN"
+
+  ELKSubnet-CIDR:
+    type: string
+    required: false
+    default: "192.168.0.0/28"
+    pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
+    title: "ELK Subnet CIDR"
+    description: "ELK Subnet CIDR"
+
+  elasticsearch_download_url:
+    title: "Elasticsearch download URL"
+    description: "Elasticsearch download URL"
+    type: string
+    required: false
+
+  kibana_download_url:
+    title: "Kibana download URL"
+    description: "Kibana download URL"
+    type: string
+    required: false
+
+  logstash_download_url:
+    title: "Logstash download URL"
+    description: "Logstash download URL"
+    type: string
+    required: false
+
+  KibanaPort:
+    title: "Kibana Port"
+    description: "Kibana Port"
+    default: "5601"
+    type: string
+    required: false
+  
+  ESDataPort:
+    title: "ESData Port"
+    description: "Elasticsearch Data Port (Outbound HTTP Traffic)"
+    default: "9200"
+    type: string
+    required: false
+
+outputs:
+
+  ELK_VM_public_IP:
+    title: "ELK VM Public IP"
+    displayText: "ELK VM Public IP"
+    type: copyableString
+    visible: true
+  
+  generated_ssh_private_key:
+    title: "Generated SSH Private Key"
+    displayText: "Generated SSH Private Key"
+    type: text
+    visible: true
+  
+  
+

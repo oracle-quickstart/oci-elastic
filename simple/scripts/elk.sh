@@ -1,21 +1,21 @@
 #!/bin/bash
 
 # Configure firewall
-firewall-offline-cmd --add-port=9200/tcp
-firewall-offline-cmd --add-port=5601/tcp
+firewall-offline-cmd --add-port=${ESDataPort}/tcp
+firewall-offline-cmd --add-port=${KibanaPort}/tcp
 systemctl restart firewalld
 
 # Install Java
 yum install -y java
 
 # Install Elasticsearch
-yum install -y https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.0.0-x86_64.rpm
+yum install -y ${elasticsearch_download_url}
 
 # Install Kibana
-yum install -y https://artifacts.elastic.co/downloads/kibana/kibana-7.0.0-x86_64.rpm
+yum install -y ${kibana_download_url}
 
 # Install Logstash
-yum install -y https://artifacts.elastic.co/downloads/logstash/logstash-7.0.0.rpm
+yum install -y ${logstash_download_url}
 
 # Enable and start services
 systemctl daemon-reload
