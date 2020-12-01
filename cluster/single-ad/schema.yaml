@@ -80,25 +80,31 @@ variables:
     required: false
 
   BastionShape:
-    type: string
+    type: oci:core:instanceshape:name
     default: "VM.Standard2.1"
     title: "Bastion Shape"
     description: "Bastion Host Shape"
     required: false
+    dependsOn:
+      compartmentId: ${compartment_ocid}
 
   MasterNodeShape:
-    type: string
+    type: oci:core:instanceshape:name
     default: "VM.Standard2.2"
     title: "ESMaster Node Shape"
     description: "ElasticSearch Master Node Shape"
     required: false
+    dependsOn:
+      compartmentId: ${compartment_ocid}
 
   DataNodeShape:
-    type: string
+    type: oci:core:instanceshape:name
     default: "VM.Standard2.4"
     title: "ESData Node Shape"
     description: "ElasticSearch Data Node Shape"
     required: false
+    dependsOn:
+      compartmentId: ${compartment_ocid}
 
   BootVolSize:
     type: string
@@ -147,11 +153,17 @@ variables:
     description: "LB Subnet AD1 CIDR"
 
   lb_shape:
+    type: enum
     title: "Load Balanacer Shape"
     description: "Load Balanacer Shape"
     default: "100Mbps"
-    type: string
     required: false 
+    enum:
+      - "100Mbps"
+      - "10Mbps"
+      - "10Mbps-Micro"
+      - "400Mbps"
+      - "8000Mbps"
 
   ESBootStrap:
     type: string
