@@ -12,7 +12,6 @@ data "template_file" "ELK" {
 }
 
 resource "oci_core_instance" "ELK" {
-  #availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[0],"name")
   availability_domain = var.availablity_domain_name
   compartment_id      = var.compartment_ocid
   display_name        = "ELK"
@@ -27,7 +26,7 @@ resource "oci_core_instance" "ELK" {
 
   source_details {
     source_type = "image"
-    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
+    source_id   = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
   }
 
   metadata = {

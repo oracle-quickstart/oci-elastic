@@ -3,9 +3,7 @@ variable "user_ocid" {}
 variable "fingerprint" {}
 variable "private_key_path" {}
 variable "region" {}
-
 variable "compartment_ocid" {}
-
 variable "availablity_domain_name" {}
 
 variable "VCN-CIDR" {
@@ -20,8 +18,14 @@ variable "instance_shape" {
   default = "VM.Standard2.4"
 }
 
-variable "OsImage" {
-  default = "Oracle-Linux-7.8-2020.09.23-0"
+variable "instance_os" {
+  description = "Operating system for compute instances"
+  default     = "Oracle Linux"
+}
+
+variable "linux_os_version" {
+  description = "Operating system version for all Linux instances"
+  default     = "7.8"
 }
 
 variable "elasticsearch_download_url" {

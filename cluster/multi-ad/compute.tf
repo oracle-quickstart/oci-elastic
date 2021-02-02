@@ -15,7 +15,7 @@ resource "oci_core_instance" "BastionHost" {
   }
 
   source_details {
-    source_id   = data.oci_core_images.InstanceImageOCID.images[0].id
+    source_id   = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
     source_type = "image"
   }
 
@@ -38,11 +38,10 @@ resource "oci_core_instance" "ESMasterNode1" {
 
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
-    #user_data           = base64encode(file(var.ESBootStrap))
   }
 
   source_details {
-    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -66,11 +65,10 @@ resource "oci_core_instance" "ESMasterNode2" {
 
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
-    #user_data           = base64encode(file(var.ESBootStrap))
   }
 
   source_details {
-    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -94,11 +92,10 @@ resource "oci_core_instance" "ESMasterNode3" {
 
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
-    #user_data           = base64encode(file(var.ESBootStrap))
   }
 
   source_details {
-    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -121,11 +118,10 @@ resource "oci_core_instance" "ESDataNode1" {
   }
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
-    #user_data           = base64encode(file(var.ESBootStrap))
   }
 
   source_details {
-    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -149,11 +145,10 @@ resource "oci_core_instance" "ESDataNode2" {
 
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
-    #user_data           = base64encode(file(var.ESBootStrap))
   }
 
   source_details {
-    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -177,11 +172,10 @@ resource "oci_core_instance" "ESDataNode3" {
 
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
-    #user_data           = base64encode(file(var.ESBootStrap))
   }
 
   source_details {
-    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -205,11 +199,10 @@ resource "oci_core_instance" "ESDataNode4" {
 
   metadata = {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
-    #user_data           = base64encode(file(var.ESBootStrap))
   }
 
   source_details {
-    source_id               = data.oci_core_images.InstanceImageOCID.images[0].id
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }

@@ -14,18 +14,18 @@ variableGroups:
   visible: false
   variables:
   - tenancy_ocid
-
+  - region
 
 - title: "Required Configuration"
   visible: true  
   variables:
   - compartment_ocid
-  - region
 
 - title: "Optional Configuration"
   visible: true  
   variables:
-  - OsImage
+  - instance_os
+  - linux_os_version
   - BastionShape
   - MasterNodeShape
   - DataNodeShape
@@ -72,12 +72,25 @@ variables:
     visibile: true
 
   # Optional Configuration 
-  OsImage:
-    type: string
-    default: "Oracle-Linux-7.8-2020.09.23-0"
-    title: "Instance Image"
-    description: "Instance Image"
+  instance_os:
+    type: enum
     required: false
+    visible: false
+    title: "Instance OS"
+    description: "An Operating System that determines the operating system for your Elasticsearch and Kibana hosts."
+    default: "Oracle Linux"
+    enum:
+      - "Oracle Linux"
+
+  linux_os_version:
+    type: enum
+    required: false
+    visible: false
+    title: "Instance OS version"
+    description: "An Operating System version that determines the operating system version for your Elasticsearch and Kibana hosts."
+    default: "7.8"
+    enum:
+      - "7.8"  
 
   BastionShape:
     type: oci:core:instanceshape:name

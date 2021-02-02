@@ -25,9 +25,16 @@ variable "lb_shape" {
   default = "100Mbps"
 }
 
-variable "OsImage" {
-  default = "Oracle-Linux-7.8-2020.09.23-0"
+variable "instance_os" {
+  description = "Operating system for compute instances"
+  default     = "Oracle Linux"
 }
+
+variable "linux_os_version" {
+  description = "Operating system version for all Linux instances"
+  default     = "7.8"
+}
+
 
 variable "VCN-CIDR" {
   default = "192.168.0.0/25"

@@ -109,10 +109,15 @@ data "oci_core_vnic" "ESDataNode4Vnic" {
   vnic_id = data.oci_core_vnic_attachments.ESDataNode4Vnics.vnic_attachments.0.vnic_id
 }
 
-# Gets the Id of a specific OS Images
 data "oci_core_images" "InstanceImageOCID" {
-  #Required
-  compartment_id = var.compartment_ocid
-  display_name   = var.OsImage
+  compartment_id           = var.compartment_ocid
+  operating_system         = var.instance_os
+  operating_system_version = var.linux_os_version
+
+  filter {
+    name   = "display_name"
+    values = ["^.*Oracle[^G]*$"]
+    regex  = true
+  }
 }
 
