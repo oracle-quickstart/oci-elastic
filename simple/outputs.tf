@@ -1,5 +1,5 @@
 output "ELK_VM_public_IP" {
-  value = "${data.oci_core_vnic.elk_vnic.public_ip_address}"
+  value = data.oci_core_vnic.elk_vnic.public_ip_address
 }
 
 output "generated_ssh_private_key" {
