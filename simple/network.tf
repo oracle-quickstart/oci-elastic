@@ -6,7 +6,6 @@ resource "oci_core_virtual_network" "ELKVCN" {
 }
 
 resource "oci_core_subnet" "ELKSubnet" {
-  #availability_domain = lookup(data.oci_identity_availability_domains.ADs.availability_domains[0],"name")
   availability_domain = var.availablity_domain_name
   cidr_block          = var.ELKSubnet-CIDR
   display_name        = "ELKSubnet"

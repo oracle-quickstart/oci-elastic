@@ -1,5 +1,5 @@
 data "template_file" "ELK" {
-  template = "${file("./scripts/elk.sh")}"
+  template = file("./scripts/elk.sh")
 
   vars = {
     elasticsearch_download_url  = var.elasticsearch_download_url
