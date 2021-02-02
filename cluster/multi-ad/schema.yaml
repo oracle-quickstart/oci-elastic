@@ -78,7 +78,7 @@ variables:
   instance_os:
     type: enum
     required: false
-    visible: false
+    visible: true
     title: "Instance OS"
     description: "An Operating System that determines the operating system for your Elasticsearch and Kibana hosts."
     default: "Oracle Linux"
@@ -88,7 +88,7 @@ variables:
   linux_os_version:
     type: enum
     required: false
-    visible: false
+    visible: true
     title: "Instance OS version"
     description: "An Operating System version that determines the operating system version for your Elasticsearch and Kibana hosts."
     default: "7.8"
