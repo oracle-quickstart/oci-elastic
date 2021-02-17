@@ -36,5 +36,6 @@ resource "oci_core_security_list" "ELKSecurityList" {
       max = var.KibanaPort
       min = var.KibanaPort
     }
-  }
+  }   
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }

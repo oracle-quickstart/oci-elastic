@@ -3,6 +3,7 @@ resource "oci_core_virtual_network" "ELKVCN" {
   compartment_id = var.compartment_ocid
   display_name   = "ELKVCN"
   dns_label      = "elkvcn"
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_subnet" "ELKSubnet" {
@@ -15,12 +16,14 @@ resource "oci_core_subnet" "ELKSubnet" {
   vcn_id              = oci_core_virtual_network.ELKVCN.id
   route_table_id      = oci_core_route_table.ELKRT.id
   dhcp_options_id     = oci_core_virtual_network.ELKVCN.default_dhcp_options_id
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_internet_gateway" "ELKIG" {
   compartment_id = var.compartment_ocid
   display_name   = "ELKIG"
   vcn_id         = oci_core_virtual_network.ELKVCN.id
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_route_table" "ELKRT" {
@@ -33,4 +36,5 @@ resource "oci_core_route_table" "ELKRT" {
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_internet_gateway.ELKIG.id
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }

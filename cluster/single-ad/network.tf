@@ -3,18 +3,21 @@ resource "oci_core_virtual_network" "OCI_ES_VCN" {
   compartment_id = var.compartment_ocid
   display_name   = "OCI_ES_VCN"
   dns_label      = "OCIESVCN"
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_nat_gateway" "natgtw" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_virtual_network.OCI_ES_VCN.id
   display_name   = "OCI_ES_NAT"
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_internet_gateway" "OCI_ES_IGW" {
   compartment_id = var.compartment_ocid
   display_name   = "OCI_ES_IGW"
   vcn_id         = oci_core_virtual_network.OCI_ES_VCN.id
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_route_table" "OCI_PUB_RTB" {
@@ -27,6 +30,7 @@ resource "oci_core_route_table" "OCI_PUB_RTB" {
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_internet_gateway.OCI_ES_IGW.id
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_route_table" "OCI_ES_RTB" {
@@ -39,6 +43,7 @@ resource "oci_core_route_table" "OCI_ES_RTB" {
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_nat_gateway.natgtw.id
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_security_list" "LBSecList" {
@@ -69,6 +74,7 @@ resource "oci_core_security_list" "LBSecList" {
     protocol = "6"
     source   = "0.0.0.0/0"
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_security_list" "PrivSecList" {
@@ -117,6 +123,7 @@ resource "oci_core_security_list" "PrivSecList" {
     protocol = "6"
     source   = var.VCN-CIDR
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_security_list" "BastionSecList" {
@@ -142,6 +149,7 @@ resource "oci_core_security_list" "BastionSecList" {
     protocol = "all"
     source   = var.VCN-CIDR
   }
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_core_subnet" "LBSubnetAD1" {
@@ -154,6 +162,7 @@ resource "oci_core_subnet" "LBSubnetAD1" {
   security_list_ids   = [oci_core_security_list.LBSecList.id]
   dhcp_options_id     = oci_core_virtual_network.OCI_ES_VCN.default_dhcp_options_id
   dns_label           = "lbnet"
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 
@@ -168,6 +177,7 @@ resource "oci_core_subnet" "PrivSubnetAD1" {
   dhcp_options_id     = oci_core_virtual_network.OCI_ES_VCN.default_dhcp_options_id
   prohibit_public_ip_on_vnic  = "true"
   dns_label = "privatenet"
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 

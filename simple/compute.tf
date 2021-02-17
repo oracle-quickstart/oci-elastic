@@ -33,4 +33,6 @@ resource "oci_core_instance" "ELK" {
     ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
     user_data           = base64encode(data.template_file.ELK.rendered)
   }
+
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }

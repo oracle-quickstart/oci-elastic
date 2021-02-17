@@ -20,6 +20,8 @@ resource "oci_core_instance" "BastionHost" {
     source_type = "image"
   }
 
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
+
   timeouts {
     create = var.create_timeout
   }
@@ -46,6 +48,8 @@ resource "oci_core_instance" "ESMasterNode1" {
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
+
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 
   timeouts {
     create = var.create_timeout
@@ -74,6 +78,8 @@ resource "oci_core_instance" "ESMasterNode2" {
     boot_volume_size_in_gbs = var.BootVolSize
   }
 
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
+
   timeouts {
     create = var.create_timeout
   }
@@ -101,6 +107,8 @@ resource "oci_core_instance" "ESMasterNode3" {
     boot_volume_size_in_gbs = var.BootVolSize
   }
 
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
+
   timeouts {
     create = var.create_timeout
   }
@@ -126,6 +134,8 @@ resource "oci_core_instance" "ESDataNode1" {
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
+
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 
   timeouts {
     create = var.create_timeout
@@ -155,6 +165,8 @@ resource "oci_core_instance" "ESDataNode2" {
     boot_volume_size_in_gbs = var.BootVolSize
   }
 
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
+
   timeouts {
     create = var.create_timeout
   }
@@ -182,6 +194,8 @@ resource "oci_core_instance" "ESDataNode3" {
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
+
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 
   timeouts {
     create = var.create_timeout

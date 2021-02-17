@@ -1,5 +1,5 @@
 data "template_file" "setup_esbootstrap" {
-  template = file("${var.ESBootStrap}")
+  template = file(var.ESBootStrap)
 
   vars = {
     elasticsearch_download_url  = var.elasticsearch_download_url

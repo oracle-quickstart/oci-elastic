@@ -35,6 +35,7 @@ variableGroups:
   - logstash_download_url
   - KibanaPort
   - ESDataPort
+  - release
 
 variables:
   
@@ -146,6 +147,12 @@ variables:
     default: "9200"
     type: string
     required: false
+
+  release:
+    type: string
+    required: false
+    visible: false
+    title: "Reference Architecture Release (OCI Architecture Center)"
 
 outputs:
 

@@ -49,6 +49,7 @@ variableGroups:
   - ESDataPort2
   - create_timeout
   - volume_attachment_attachment_type
+  - release
 
 variables:
   
@@ -264,6 +265,12 @@ variables:
     type: string
     required: false
     visible: false 
+
+  release:
+    type: string
+    required: false
+    visible: false
+    title: "Reference Architecture Release (OCI Architecture Center)"
 
 outputs:
 

@@ -13,6 +13,7 @@ resource "oci_load_balancer_load_balancer" "ES-LB" {
     oci_core_instance.ESMasterNode2,
     oci_core_instance.ESMasterNode3,
   ]
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "oci_load_balancer_backend_set" "ESKibana" {

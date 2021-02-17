@@ -1,10 +1,15 @@
 variable "tenancy_ocid" {}
-variable "user_ocid" {}
-variable "fingerprint" {}
-variable "private_key_path" {}
+#variable "user_ocid" {}
+#variable "fingerprint" {}
+#variable "private_key_path" {}
 variable "region" {}
 variable "compartment_ocid" {}
 variable "availablity_domain_name" {}
+
+variable "release" {
+  description = "Reference Architecture Release (OCI Architecture Center)"
+  default     = "1.0"
+}
 
 variable "VCN-CIDR" {
   default = "10.1.0.0/16"

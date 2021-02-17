@@ -5,6 +5,11 @@ variable "private_key_path" {}
 variable "region" {}
 variable "compartment_ocid" {}
 
+variable "release" {
+  description = "Reference Architecture Release (OCI Architecture Center)"
+  default     = "1.0"
+}
+
 variable "BastionShape" {
   default = "VM.Standard2.1"
 }
