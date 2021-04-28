@@ -1,3 +1,6 @@
+## Copyright © 2020, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 data "template_file" "ELK" {
   template = file("./scripts/elk.sh")
 
@@ -7,6 +10,7 @@ data "template_file" "ELK" {
     logstash_download_url       = var.logstash_download_url
     KibanaPort                  = var.KibanaPort
     ESDataPort                  = var.ESDataPort
+    ssh_public_key              = tls_private_key.public_private_key_pair.public_key_openssh
   }
 
 }
@@ -16,6 +20,14 @@ resource "oci_core_instance" "ELK" {
   compartment_id      = var.compartment_ocid
   display_name        = "ELK"
   shape               = var.instance_shape
+  
+  dynamic "shape_config" {
+    for_each = local.is_flexible_shape ? [1] : []
+    content {
+      memory_in_gbs = var.instance_flex_shape_memory
+      ocpus = var.instance_flex_shape_ocpus
+    }
+  }
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.ELKSubnet.id

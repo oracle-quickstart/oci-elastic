@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Uploads SSH Public Key to authorized keys.
+cp /home/opc/.ssh/authorized_keys /home/opc/.ssh/authorized_keys.bak
+echo "${ssh_public_key}" >> /home/opc/.ssh/authorized_keys
+chown -R opc /home/opc/.ssh/authorized_keys
+
 # Configure firewall
 firewall-offline-cmd --add-port=${ESDataPort}/tcp
 firewall-offline-cmd --add-port=${KibanaPort}/tcp
@@ -25,3 +30,4 @@ systemctl enable kibana.service
 systemctl start kibana.service
 systemctl enable logstash.service
 systemctl start logstash.service
+

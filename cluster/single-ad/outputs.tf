@@ -1,3 +1,7 @@
+## Copyright © 2020, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
+
 # Output the private and public IPs of the instance
 
 output "BastionPublicIP" {

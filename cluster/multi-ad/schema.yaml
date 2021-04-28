@@ -15,22 +15,24 @@ variableGroups:
   variables:
   - tenancy_ocid
   - region
+  - release
+  - BastionBootStrap
+  - elasticsearch_download_url
+  - kibana_download_url
+  - create_timeout
+  - volume_attachment_attachment_type
 
 - title: "Required Configuration"
   visible: true  
   variables:
   - compartment_ocid
+  - show_advanced
 
-- title: "Optional Configuration"
-  visible: true  
+- title: "Networking Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
   variables:
-  - instance_os
-  - linux_os_version
-  - BastionShape
-  - MasterNodeShape
-  - DataNodeShape
-  - BootVolSize
-  - DataVolSize
   - VCN-CIDR
   - BastSubnetAD1CIDR
   - PrivSubnetAD1CIDR
@@ -38,20 +40,56 @@ variableGroups:
   - PrivSubnetAD3CIDR
   - LBSubnetAD1CIDR
   - LBSubnetAD2CIDR
+
+- title: "Compute Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
+  - ssh_public_key
+  - instance_os
+  - linux_os_version
+  - BastionShape
+  - Bastion_Flex_Shape_OCPUS
+  - Bastion_Flex_Shape_Memory
+  - MasterNodeShape
+  - MasterNode_Flex_Shape_OCPUS
+  - MasterNode_Flex_Shape_Memory
+  - DataNodeShape
+  - DataNode_Flex_Shape_OCPUS
+  - DataNode_Flex_Shape_Memory
+  - BootVolSize
+  - DataVolSize
+
+- title: "Load Balancer Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables: 
   - lb_shape
-  - ESBootStrap
-  - BastionBootStrap
-  - elasticsearch_download_url
-  - kibana_download_url
+  - flex_lb_min_shape
+  - flex_lb_max_shape 
   - backend_set_health_checker_interval_ms
+
+- title: "ES & Kibana Optional Configuration"
+  visible: 
+      and:
+        - show_advanced
+  variables:
   - KibanaPort
   - ESDataPort
   - ESDataPort2
-  - create_timeout
-  - volume_attachment_attachment_type
-  - release
+  - ESBootStrap
+
 
 variables:
+
+  show_advanced:
+    type: boolean
+    title: "Show advanced options?"
+    description: "Shows advanced options."
+    visible: true
+    default: false
   
   # General Configuration
   tenancy_ocid:
@@ -59,23 +97,30 @@ variables:
     description: "The Oracle Cloud Identifier (OCID) for your tenancy"
     type: string
     required: true
-    visibile: false
+    visible: false
 
   region:
     title: "Region"
     description: "Region where you deploy your Elasticsearch and Kibana"
     type: oci:identity:region:name
     required: true
-    visibile: true
+    visible: true
 
   compartment_ocid:
     title: "Compartment OCID"
     description: "Comparment where you deploy your Elasticsearch and Kibana"
     type: oci:identity:compartment:id
     required: true
-    visibile: true
+    visible: true
 
   # Optional Configuration 
+
+  ssh_public_key:
+    type: oci:core:ssh:publickey
+    title: "Public SSH Key"
+    description: "Choose public SSH Key to be uploaded into compute instances."
+    required: false
+  
   instance_os:
     type: enum
     required: false
@@ -92,50 +137,171 @@ variables:
     visible: true
     title: "Instance OS version"
     description: "An Operating System version that determines the operating system version for your Elasticsearch and Kibana hosts."
-    default: "7.8"
+    default: "7.9"
     enum:
-      - "7.8"  
+      - "8"
+      - "7.9"  
 
   BastionShape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard2.1"
+    default: "VM.Standard.E3.Flex"
     title: "Bastion Shape"
     description: "Bastion Host Shape"
     required: false
     dependsOn:
       compartmentId: ${compartment_ocid}
 
+  Bastion_Flex_Shape_OCPUS:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 1
+    title: "Bastion Node Flex Shape OCPUs"
+    description: "Choose number of OCPUs for Flex Shape of Bastion Node."
+    visible:
+      and:
+        - or:
+          - eq:
+            - BastionShape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - BastionShape 
+            - "VM.Standard.E4.Flex"
+
+  Bastion_Flex_Shape_Memory:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 1
+    title: "Bastion Node Flex Shape Memory (GB)"
+    description: "Choose number GB for Flex Shape Memory of Bastion Node."
+    visible:
+      and:
+        - or:
+          - eq:
+            - BastionShape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - BastionShape
+            - "VM.Standard.E4.Flex"
+
   MasterNodeShape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard2.2"
+    default: "VM.Standard.E4.Flex"
     title: "ESMaster Node Shape"
     description: "ElasticSearch Master Node Shape"
     required: false
     dependsOn:
       compartmentId: ${compartment_ocid}
 
+  MasterNode_Flex_Shape_OCPUS:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 2
+    title: "ESMaster Node Flex Shape OCPUs"
+    description: "Choose number of OCPUs for Flex Shape of ESMaster Node."
+    visible:
+      and:
+        - or:
+          - eq:
+            - MasterNodeShape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - MasterNodeShape 
+            - "VM.Standard.E4.Flex"
+
+  MasterNode_Flex_Shape_Memory:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 30
+    title: "ESMaster Node Flex Shape Memory (GB)"
+    description: "Choose number GB for Flex Shape Memory of ESMaster Node."
+    visible:
+      and:
+        - or:
+          - eq:
+            - MasterNodeShape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - MasterNodeShape
+            - "VM.Standard.E4.Flex"
+
   DataNodeShape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard2.4"
+    default: "VM.Standard.E4.Flex"
     title: "ESData Node Shape"
     description: "ElasticSearch Data Node Shape"
     required: false
     dependsOn:
       compartmentId: ${compartment_ocid}
 
+  DataNode_Flex_Shape_OCPUS:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 2
+    title: "ESData Node Flex Shape OCPUs"
+    description: "Choose number of OCPUs for Flex Shape of ESData Node."
+    visible:
+      and:
+        - or:
+          - eq:
+            - DataNodeShape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - DataNodeShape 
+            - "VM.Standard.E4.Flex"
+
+  DataNode_Flex_Shape_Memory:
+    type: number
+    required: false
+    minimum: 1
+    maximum: 128
+    multipleOf: 1
+    default: 30
+    title: "ESData Node Flex Shape Memory (GB)"
+    description: "Choose number GB for Flex Shape Memory of ESData Node."
+    visible:
+      and:
+        - or:
+          - eq:
+            - DataNodeShape 
+            - "VM.Standard.E3.Flex"
+          - eq:
+            - DataNodeShape
+            - "VM.Standard.E4.Flex"
+
   BootVolSize:
-    type: string
-    default: "100"
-    title: "Boot Volume Size (GB)"
-    description: "Boot Volume Size (GB)"
-    required: false   
+    type: number
+    required: false
+    minimum: 50
+    maximum: 32000
+    multipleOf: 1
+    default: 100
+    title: "ESMaster/ESData Nodes Boot Volume Size (GB)"
+    description: "Choose ESMaster/ESData Nodes Boot Volume Size" 
 
   DataVolSize:
-    title: "Data Volume Size (GB)"
-    description: "Data Volume Size (GB)"
-    default: "200"
-    type: string
-    required: false 
+    type: number
+    required: false
+    minimum: 50
+    maximum: 32000
+    multipleOf: 1
+    default: 200
+    title: "ESData Nodes Data Volume Size (GB)"
+    description: "Choose ESData Nodes Data Volume Size"
 
   VCN-CIDR:
     type: string
@@ -197,14 +363,51 @@ variables:
     type: enum
     title: "Load Balanacer Shape"
     description: "Load Balanacer Shape"
-    default: "100Mbps"
+    default: "flexible"
     required: false 
     enum:
+      - "flexible"
       - "100Mbps"
       - "10Mbps"
       - "10Mbps-Micro"
       - "400Mbps"
       - "8000Mbps"
+
+  flex_lb_min_shape:
+    type: enum
+    required: false
+    default: "10"
+    title: "LB Flex Min Shape"
+    description: "Choose Minimum Shape for Flex Load Balancer."
+    enum:
+      - "10"
+      - "100"
+      - "1000"
+      - "400"
+      - "8000"
+    visible:
+      and:
+        - eq:
+          - lb_shape 
+          - "flexible"
+
+  flex_lb_max_shape:
+    type: enum
+    required: false
+    default: "100"
+    title: "LB Flex Max Shape"
+    description: "Choose Maximum Shape for Flex Load Balancer."
+    enum:
+      - "10"
+      - "100"
+      - "1000"
+      - "400"
+      - "8000"
+    visible:
+      and:
+        - eq:
+          - lb_shape 
+          - "flexible"
 
   ESBootStrap:
     type: string
@@ -231,29 +434,41 @@ variables:
   backend_set_health_checker_interval_ms:
     title: "Load Balanacer Health Check interval (ms)"
     description: "Load Balanacer Health Check interval (ms)"
-    default: "15000"
-    type: string
+    type: number
+    minimum: 1
+    maximum: 65535
+    multipleOf: 1
+    default: 15000
     required: false
 
   KibanaPort:
     title: "Kibana Port"
     description: "Kibana Port"
-    default: "5601"
-    type: string
+    type: number
+    minimum: 1
+    maximum: 65535
+    multipleOf: 1
+    default: 5601
     required: false
   
   ESDataPort:
     title: "ESData Port 1"
     description: "Elasticsearch Data Port (Outbound HTTP Traffic)"
-    default: "9200"
-    type: string
+    type: number
+    minimum: 1
+    maximum: 65535
+    multipleOf: 1
+    default: 9200
     required: false
 
   ESDataPort2:
     title: "ESData Port 2"
     description: "Elasticsearch Data Port (Internode binary Traffic)"
-    default: "9300"
-    type: string
+    type: number
+    minimum: 1
+    maximum: 65535
+    multipleOf: 1
+    default: 9300
     required: false
 
   create_timeout:
@@ -297,6 +512,3 @@ outputs:
     displayText: "Generated SSH Private Key"
     type: text
     visible: true
-  
-  
-

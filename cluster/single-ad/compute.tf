@@ -1,9 +1,21 @@
+## Copyright © 2020, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
+
 resource "oci_core_instance" "BastionHost" {
-  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[0]["name"]
-  fault_domain = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
+  availability_domain = var.availablity_domain_name
+  fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "BastionHost"
   shape               = var.BastionShape
+
+  dynamic "shape_config" {
+    for_each = local.is_flexible_bastion_shape ? [1] : []
+    content {
+      memory_in_gbs = var.Bastion_Flex_Shape_Memory
+      ocpus = var.Bastion_Flex_Shape_OCPUS
+    }
+  }
 
   create_vnic_details {
     subnet_id              = oci_core_subnet.BastionSubnetAD1.id
@@ -11,12 +23,12 @@ resource "oci_core_instance" "BastionHost" {
   }
 
   metadata = {
-    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
-    user_data           = base64encode(file(var.BastionBootStrap))
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = data.template_cloudinit_config.cloud_init_bastion.rendered
   }
 
   source_details {
-    source_id   = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
+    source_id   = lookup(data.oci_core_images.InstanceImageOCID_Bastion.images[0], "id")
     source_type = "image"
   }
 
@@ -28,11 +40,19 @@ resource "oci_core_instance" "BastionHost" {
 }
 
 resource "oci_core_instance" "ESMasterNode1" {
-  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[0]["name"]
-  fault_domain = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
+  availability_domain = var.availablity_domain_name
+  fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESMasterNode1"
   shape               = var.MasterNodeShape
+
+  dynamic "shape_config" {
+    for_each = local.is_flexible_masternode_shape ? [1] : []
+    content {
+      memory_in_gbs = var.MasterNode_Flex_Shape_Memory
+      ocpus = var.MasterNode_Flex_Shape_OCPUS
+    }
+  }
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.PrivSubnetAD1.id
@@ -40,11 +60,12 @@ resource "oci_core_instance" "ESMasterNode1" {
   }
 
   metadata = {
-    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = data.template_cloudinit_config.cloud_init.rendered
   }
 
   source_details {
-    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID_MasterNode.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -57,11 +78,19 @@ resource "oci_core_instance" "ESMasterNode1" {
 }
 
 resource "oci_core_instance" "ESMasterNode2" {
-  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[0]["name"]
-  fault_domain = data.oci_identity_fault_domains.FDs.fault_domains[1]["name"]
+  availability_domain = var.availablity_domain_name
+  fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[1]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESMasterNode2"
   shape               = var.MasterNodeShape
+
+  dynamic "shape_config" {
+    for_each = local.is_flexible_masternode_shape ? [1] : []
+    content {
+      memory_in_gbs = var.MasterNode_Flex_Shape_Memory
+      ocpus = var.MasterNode_Flex_Shape_OCPUS
+    }
+  }
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.PrivSubnetAD1.id
@@ -69,11 +98,12 @@ resource "oci_core_instance" "ESMasterNode2" {
   }
 
   metadata = {
-    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = data.template_cloudinit_config.cloud_init.rendered
   }
 
   source_details {
-    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID_MasterNode.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -86,11 +116,19 @@ resource "oci_core_instance" "ESMasterNode2" {
 }
 
 resource "oci_core_instance" "ESMasterNode3" {
-  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[0]["name"]
-  fault_domain = data.oci_identity_fault_domains.FDs.fault_domains[2]["name"]
+  availability_domain = var.availablity_domain_name
+  fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[2]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESMasterNode3"
   shape               = var.MasterNodeShape
+
+  dynamic "shape_config" {
+    for_each = local.is_flexible_masternode_shape ? [1] : []
+    content {
+      memory_in_gbs = var.MasterNode_Flex_Shape_Memory
+      ocpus = var.MasterNode_Flex_Shape_OCPUS
+    }
+  }
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.PrivSubnetAD1.id
@@ -98,11 +136,12 @@ resource "oci_core_instance" "ESMasterNode3" {
   }
 
   metadata = {
-    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = data.template_cloudinit_config.cloud_init.rendered
   }
 
   source_details {
-    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID_MasterNode.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -115,22 +154,32 @@ resource "oci_core_instance" "ESMasterNode3" {
 }
 
 resource "oci_core_instance" "ESDataNode1" {
-  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[0]["name"]
-  fault_domain = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
+  availability_domain = var.availablity_domain_name
+  fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESDataNode1"
   shape               = var.DataNodeShape
+
+  dynamic "shape_config" {
+    for_each = local.is_flexible_datanode_shape ? [1] : []
+    content {
+      memory_in_gbs = var.DataNode_Flex_Shape_Memory
+      ocpus = var.DataNode_Flex_Shape_OCPUS
+    }
+  }
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.PrivSubnetAD1.id
     assign_public_ip = false
   }
+
   metadata = {
-    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = data.template_cloudinit_config.cloud_init.rendered
   }
 
   source_details {
-    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID_DataNode.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -143,11 +192,20 @@ resource "oci_core_instance" "ESDataNode1" {
 }
 
 resource "oci_core_instance" "ESDataNode2" {
-  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[0]["name"]
-  fault_domain = data.oci_identity_fault_domains.FDs.fault_domains[1]["name"]
+  availability_domain = var.availablity_domain_name
+  fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[1]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESDataNode2"
   shape               = var.DataNodeShape
+
+  dynamic "shape_config" {
+    for_each = local.is_flexible_datanode_shape ? [1] : []
+    content {
+      memory_in_gbs = var.DataNode_Flex_Shape_Memory
+      ocpus = var.DataNode_Flex_Shape_OCPUS
+    }
+  }
+
   depends_on          = [oci_core_instance.BastionHost]
 
   create_vnic_details {
@@ -156,11 +214,12 @@ resource "oci_core_instance" "ESDataNode2" {
   }
 
   metadata = {
-    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = data.template_cloudinit_config.cloud_init.rendered
   }
 
   source_details {
-    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID_DataNode.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }
@@ -173,11 +232,20 @@ resource "oci_core_instance" "ESDataNode2" {
 }
 
 resource "oci_core_instance" "ESDataNode3" {
-  availability_domain = data.oci_identity_availability_domains.ADs.availability_domains[0]["name"]
-  fault_domain = data.oci_identity_fault_domains.FDs.fault_domains[2]["name"]
+  availability_domain = var.availablity_domain_name
+  fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[2]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESDataNode3"
   shape               = var.DataNodeShape
+
+  dynamic "shape_config" {
+    for_each = local.is_flexible_datanode_shape ? [1] : []
+    content {
+      memory_in_gbs = var.DataNode_Flex_Shape_Memory
+      ocpus = var.DataNode_Flex_Shape_OCPUS
+    }
+  }
+  
   depends_on          = [oci_core_instance.BastionHost]
 
   create_vnic_details {
@@ -186,11 +254,12 @@ resource "oci_core_instance" "ESDataNode3" {
   }
 
   metadata = {
-    ssh_authorized_keys = tls_private_key.public_private_key_pair.public_key_openssh
+    ssh_authorized_keys = var.ssh_public_key
+    user_data = data.template_cloudinit_config.cloud_init.rendered
   }
 
   source_details {
-    source_id               = lookup(data.oci_core_images.InstanceImageOCID.images[0], "id")
+    source_id               = lookup(data.oci_core_images.InstanceImageOCID_DataNode.images[0], "id")
     source_type             = "image"
     boot_volume_size_in_gbs = var.BootVolSize
   }

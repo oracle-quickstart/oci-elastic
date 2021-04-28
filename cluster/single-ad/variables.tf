@@ -1,33 +1,74 @@
+## Copyright © 2020, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 variable "tenancy_ocid" {}
 variable "user_ocid" {}
 variable "fingerprint" {}
 variable "private_key_path" {}
 variable "region" {}
 variable "compartment_ocid" {}
+variable "availablity_domain_name" {}
 
 variable "release" {
   description = "Reference Architecture Release (OCI Architecture Center)"
-  default     = "1.0"
+  default     = "1.1"
 }
 
 variable "BastionShape" {
-  default = "VM.Standard2.1"
+  default = "VM.Standard.E3.Flex"
+}
+
+variable "Bastion_Flex_Shape_OCPUS" {
+    default = 1
+}
+
+variable "Bastion_Flex_Shape_Memory" {
+    default = 1
 }
 
 variable "MasterNodeShape" {
-  default = "VM.Standard2.2"
+  default = "VM.Standard.E3.Flex"
+}
+
+variable "MasterNode_Flex_Shape_OCPUS" {
+    default = 2
+}
+
+variable "MasterNode_Flex_Shape_Memory" {
+    default = 30
 }
 
 variable "DataNodeShape" {
-  default = "VM.Standard2.4"
+  default = "VM.Standard.E3.Flex"
 }
+
+variable "DataNode_Flex_Shape_OCPUS" {
+    default = 4
+}
+
+variable "DataNode_Flex_Shape_Memory" {
+    default = 60
+}
+
 
 variable "BootVolSize" {
   default = "100"
 }
 
+variable "ssh_public_key" {
+  default = ""
+}
+
 variable "lb_shape" {
-  default = "100Mbps"
+  default = "flexible"
+}
+
+variable "flex_lb_min_shape" {
+  default = "10"
+}
+
+variable "flex_lb_max_shape" {
+  default = "100"
 }
 
 variable "instance_os" {
@@ -37,7 +78,7 @@ variable "instance_os" {
 
 variable "linux_os_version" {
   description = "Operating system version for all Linux instances"
-  default     = "7.8"
+  default     = "7.9"
 }
 
 
@@ -101,5 +142,21 @@ variable "DataVolSize" {
 
 variable "volume_attachment_attachment_type" {
   default = "iscsi"
+}
+
+# Dictionary Locals
+locals {
+  compute_flexible_shapes = [
+    "VM.Standard.E3.Flex",
+    "VM.Standard.E4.Flex"
+  ]
+}
+
+# Checks if is using Flexible Compute Shapes
+locals {
+  is_flexible_bastion_shape = contains(local.compute_flexible_shapes, var.BastionShape)
+  is_flexible_masternode_shape = contains(local.compute_flexible_shapes, var.MasterNodeShape)
+  is_flexible_datanode_shape = contains(local.compute_flexible_shapes, var.DataNodeShape)
+  is_flexible_lb_shape = var.lb_shape == "flexible" ? true : false
 }
 

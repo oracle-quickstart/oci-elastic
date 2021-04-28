@@ -5,3 +5,8 @@ firewall-offline-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -o ens3 -j MASQU
 firewall-offline-cmd --direct --add-rule ipv4 filter FORWARD 0 -i ens3 -j ACCEPT
 sysctl -p
 systemctl restart firewalld
+
+# Uploads SSH Public Key to authorized keys.
+cp /home/opc/.ssh/authorized_keys /home/opc/.ssh/authorized_keys.bak
+echo "${ssh_public_key}" >> /home/opc/.ssh/authorized_keys
+chown -R opc /home/opc/.ssh/authorized_keys
