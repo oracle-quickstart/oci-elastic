@@ -13,14 +13,22 @@ systemctl restart firewalld
 # Install Java
 yum install -y java
 
-# Install Elasticsearch
-yum install -y ${elasticsearch_download_url}
-
-# Install Kibana
-yum install -y ${kibana_download_url}
-
-# Install Logstash
-yum install -y ${logstash_download_url}
+if [[ $(uname -m | sed 's/^.*\(el[0-9]\+\).*$/\1/') == "aarch64" ]]
+then
+	# Install Elasticsearch
+	yum install -y ${elasticsearch_download_url}-${elasticsearch_download_version}-aarch64.rpm 
+	# Install Kibana
+	yum install -y ${kibana_download_url}-${kibana_download_version}-aarch64.rpm 
+	# Install Logstash
+	yum install -y ${logstash_download_url}-${logstash_download_version}-aarch64.rpm 
+else
+	# Install Elasticsearch
+	yum install -y ${elasticsearch_download_url}-${elasticsearch_download_version}-x86_64.rpm  
+	# Install Kibana
+	yum install -y ${kibana_download_url}-${kibana_download_version}-x86_64.rpm 
+	# Install Logstash
+	yum install -y ${logstash_download_url}-${logstash_download_version}-x86_64.rpm
+fi	
 
 # Enable and start services
 systemctl daemon-reload

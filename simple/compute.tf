@@ -1,22 +1,25 @@
-## Copyright © 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 data "template_file" "ELK" {
   template = file("./scripts/elk.sh")
 
   vars = {
-    elasticsearch_download_url  = var.elasticsearch_download_url
-    kibana_download_url         = var.kibana_download_url
-    logstash_download_url       = var.logstash_download_url
-    KibanaPort                  = var.KibanaPort
-    ESDataPort                  = var.ESDataPort
-    ssh_public_key              = tls_private_key.public_private_key_pair.public_key_openssh
+    elasticsearch_download_url      = var.elasticsearch_download_url
+    kibana_download_url             = var.kibana_download_url
+    logstash_download_url           = var.logstash_download_url
+    elasticsearch_download_version  = var.elasticsearch_download_version
+    kibana_download_version         = var.kibana_download_version
+    logstash_download_version       = var.logstash_download_version
+    KibanaPort                      = var.KibanaPort
+    ESDataPort                      = var.ESDataPort
+    ssh_public_key                  = tls_private_key.public_private_key_pair.public_key_openssh
   }
 
 }
 
 resource "oci_core_instance" "ELK" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   compartment_id      = var.compartment_ocid
   display_name        = "ELK"
   shape               = var.instance_shape
