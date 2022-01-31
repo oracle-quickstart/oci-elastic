@@ -32,10 +32,10 @@ If you don't have the required permissions and quota, contact your tenancy admin
 
 ## Deploy Using the Terraform CLI
 
-### Clone the Module
+### Clone the repository
 Now, you'll want a local copy of this repo.  You can make that with the commands:
 
-    git clone https://github.com/oracle/oci-quickstart-elastic.git
+    git clone https://github.com/oracle-quickstart/oci-elastic.git
     cd oci-elastic/simple
     ls
 
