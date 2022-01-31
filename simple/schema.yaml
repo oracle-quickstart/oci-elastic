@@ -1,5 +1,5 @@
-# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
-# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+## Copyright (c) 2022, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 title: "Deploy Elasticsearch and Kibana in OCI"
 description: "Deploy cluster configuration (simple) of Elasticsearch and Kibana in Oracle Cloud Infrastructure."
@@ -18,12 +18,13 @@ variableGroups:
   - elasticsearch_download_url
   - kibana_download_url
   - logstash_download_url
+  - availability_domain_number
 
 - title: "Required Configuration"
   visible: true  
   variables:
   - compartment_ocid
-  - availablity_domain_name
+  - availability_domain_name
   - show_advanced
 
 - title: "Compute Optional Configuration"
@@ -53,6 +54,9 @@ variableGroups:
   variables:
   - KibanaPort
   - ESDataPort
+  - elasticsearch_download_version
+  - kibana_download_version
+  - logstash_download_version
 
 variables:
 
@@ -149,6 +153,9 @@ variables:
           - eq:
             - instance_shape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - instance_shape 
+            - "VM.Standard.A1.Flex"
 
   instance_flex_shape_memory:
     type: number
@@ -168,6 +175,9 @@ variables:
           - eq:
             - instance_shape
             - "VM.Standard.E4.Flex"
+          - eq:
+            - instance_shape 
+            - "VM.Standard.A1.Flex"
 
   VCN-CIDR:
     type: string
@@ -222,6 +232,36 @@ variables:
     multipleOf: 1
     default: 9200
     required: false
+
+  elasticsearch_download_version:
+    type: enum
+    required: false
+    visible: true
+    title: "Elasticsearch version"
+    description: "Choose the Elasticsearch version to install."
+    default: "7.16.3"
+    enum:
+      - "7.16.3"
+
+  kibana_download_version:
+    type: enum
+    required: false
+    visible: true
+    title: "Kibana version"
+    description: "Choose the Kibana version to install."
+    default: "7.16.3"
+    enum:
+      - "7.16.3"
+
+  logstash_download_version:
+    type: enum
+    required: false
+    visible: true
+    title: "Logstash version"
+    description: "Choose the Logstash version to install."
+    default: "7.16.3"
+    enum:
+      - "7.16.3"
 
   release:
     type: string

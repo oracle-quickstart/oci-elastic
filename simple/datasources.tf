@@ -1,9 +1,14 @@
-## Copyright © 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
+# Get list of availability domains
+data "oci_identity_availability_domains" "ADs" {
+  compartment_id = var.tenancy_ocid
+}
 
 data "oci_core_vnic_attachments" "elk_vnics" {
   compartment_id      = var.compartment_ocid
-  availability_domain = var.availablity_domain_name 
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   instance_id         = oci_core_instance.ELK.id
 }
 

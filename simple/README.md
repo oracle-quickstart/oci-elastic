@@ -75,7 +75,11 @@ When the apply is complete, the infrastructure will be deployed, but cloud-init 
 
 
 ### Connect to Elasticsearch and Kibana
-When the module is deployed, you will see an output that shows the ELK VM public IP and generated ssh private key. Save the private key in id_rsa file and grant minimum privileges:
+When the module is deployed, you will see an output that shows the ELK VM public IP and generated ssh private key. Obtain the private key by accessing terraform console and decrypting sensitive value as follows:
+
+![](../images/simple/terraform-console.png)
+
+Next save the content of the generated ssh private key and grant minimum privileges:
 
 `chmod 400 id_rsa`
 

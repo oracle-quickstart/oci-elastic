@@ -1,4 +1,4 @@
-## Copyright © 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 resource "oci_core_virtual_network" "ELKVCN" {
@@ -10,7 +10,6 @@ resource "oci_core_virtual_network" "ELKVCN" {
 }
 
 resource "oci_core_subnet" "ELKSubnet" {
-  availability_domain = var.availablity_domain_name
   cidr_block          = var.ELKSubnet-CIDR
   display_name        = "ELKSubnet"
   dns_label           = "elksubnet"

@@ -1,4 +1,4 @@
-## Copyright © 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 variable "tenancy_ocid" {}
@@ -7,11 +7,16 @@ variable "fingerprint" {}
 variable "private_key_path" {}
 variable "region" {}
 variable "compartment_ocid" {}
-variable "availablity_domain_name" {}
+variable "availability_domain_name" {
+  default = ""
+}
+variable "availability_domain_number" {
+  default = 0
+}
 
 variable "release" {
   description = "Reference Architecture Release (OCI Architecture Center)"
-  default     = "1.1"
+  default     = "1.2"
 }
 
 variable "ssh_public_key" {
@@ -27,7 +32,7 @@ variable "ELKSubnet-CIDR" {
 }
 
 variable "instance_shape" {
-  default = "VM.Standard.E3.Flex"
+  default = "VM.Standard.A1.Flex"
 }
 
 variable "instance_flex_shape_ocpus" {
@@ -45,19 +50,31 @@ variable "instance_os" {
 
 variable "linux_os_version" {
   description = "Operating system version for all Linux instances"
-  default     = "7.9"
+  default     = "8"
 }
 
 variable "elasticsearch_download_url" {
-  default = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.0.0-x86_64.rpm"
+  default = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch"
+}
+
+variable "elasticsearch_download_version" {
+  default = "7.16.3"
 }
 
 variable "kibana_download_url" {
-  default = "https://artifacts.elastic.co/downloads/kibana/kibana-7.0.0-x86_64.rpm"
+  default = "https://artifacts.elastic.co/downloads/kibana/kibana"
+}
+
+variable "kibana_download_version" {
+  default = "7.16.3"
 }
 
 variable "logstash_download_url" {
-  default = "https://artifacts.elastic.co/downloads/logstash/logstash-7.0.0.rpm"
+  default = "https://artifacts.elastic.co/downloads/logstash/logstash"
+}
+
+variable "logstash_download_version" {
+  default = "7.16.3"
 }
 
 variable "KibanaPort" {
@@ -72,7 +89,8 @@ variable "ESDataPort" {
 locals {
   compute_flexible_shapes = [
     "VM.Standard.E3.Flex",
-    "VM.Standard.E4.Flex"
+    "VM.Standard.E4.Flex",
+    "VM.Standard.A1.Flex"
   ]
 }
 
