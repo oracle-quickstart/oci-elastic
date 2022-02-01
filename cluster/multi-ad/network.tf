@@ -1,4 +1,4 @@
-## Copyright (c) 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 resource "oci_core_virtual_network" "OCI_ES_VCN" {
@@ -16,6 +16,13 @@ resource "oci_core_internet_gateway" "OCI_ES_IGW" {
   defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
+resource "oci_core_nat_gateway" "OCI_ES_NATGW" {
+  compartment_id = var.compartment_ocid
+  display_name   = "OCI_ES_NATGW"
+  vcn_id         = oci_core_virtual_network.OCI_ES_VCN.id
+  defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
+}
+
 resource "oci_core_route_table" "OCI_PUB_RTB" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_virtual_network.OCI_ES_VCN.id
@@ -29,15 +36,15 @@ resource "oci_core_route_table" "OCI_PUB_RTB" {
   defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
-resource "oci_core_route_table" "OCI_ES_RTB" {
+resource "oci_core_route_table" "OCI_NAT_RTB" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_virtual_network.OCI_ES_VCN.id
-  display_name   = "OCI_ES_RTB"
+  display_name   = "OCI_NAT_RTB"
 
   route_rules {
     destination       = "0.0.0.0/0"
     destination_type  = "CIDR_BLOCK"
-    network_entity_id = data.oci_core_private_ips.BastionPrivateIPs.private_ips[0]["id"]
+    network_entity_id = oci_core_nat_gateway.OCI_ES_NATGW.id
   }
   defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
@@ -180,7 +187,7 @@ resource "oci_core_subnet" "PrivSubnetAD1" {
   display_name        = "PrivateSubnetAD1"
   compartment_id      = var.compartment_ocid
   vcn_id              = oci_core_virtual_network.OCI_ES_VCN.id
-  route_table_id      = oci_core_route_table.OCI_ES_RTB.id
+  route_table_id      = oci_core_route_table.OCI_NAT_RTB.id
   security_list_ids   = [oci_core_security_list.PrivSecList.id]
   dhcp_options_id     = oci_core_virtual_network.OCI_ES_VCN.default_dhcp_options_id
   defined_tags        = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
@@ -195,7 +202,7 @@ resource "oci_core_subnet" "PrivSubnetAD2" {
   display_name        = "PrivateSubnetAD2"
   compartment_id      = var.compartment_ocid
   vcn_id              = oci_core_virtual_network.OCI_ES_VCN.id
-  route_table_id      = oci_core_route_table.OCI_ES_RTB.id
+  route_table_id      = oci_core_route_table.OCI_NAT_RTB.id
   security_list_ids   = [oci_core_security_list.PrivSecList.id]
   dhcp_options_id     = oci_core_virtual_network.OCI_ES_VCN.default_dhcp_options_id
   defined_tags        = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
@@ -210,7 +217,7 @@ resource "oci_core_subnet" "PrivSubnetAD3" {
   display_name        = "PrivateSubnetAD3"
   compartment_id      = var.compartment_ocid
   vcn_id              = oci_core_virtual_network.OCI_ES_VCN.id
-  route_table_id      = oci_core_route_table.OCI_ES_RTB.id
+  route_table_id      = oci_core_route_table.OCI_NAT_RTB.id
   security_list_ids   = [oci_core_security_list.PrivSecList.id]
   dhcp_options_id     = oci_core_virtual_network.OCI_ES_VCN.default_dhcp_options_id
   defined_tags        = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }

@@ -59,8 +59,8 @@ region = "<oci_region>"
 # Compartment
 compartment_ocid = "<compartment_ocid>"
 
-# AD
-availablity_domain_name = "<availablity_domain_name>" # for example GrCH:US-ASHBURN-AD-1
+# AD (optional)
+availability_domain_name = "<availablity_domain_name>" # for example GrCH:US-ASHBURN-AD-1
 
 ````
 

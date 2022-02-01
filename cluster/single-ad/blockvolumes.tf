@@ -1,23 +1,23 @@
-## Copyright © 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 
 resource "oci_core_volume" "ESData1Vol1" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   compartment_id      = var.compartment_ocid
   size_in_gbs         = var.DataVolSize
   display_name        = "ESData1Vol1"
 }
 
 resource "oci_core_volume" "ESData2Vol2" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   compartment_id      = var.compartment_ocid
   size_in_gbs         = var.DataVolSize
   display_name        = "ESData2Vol2"
 }
 
 resource "oci_core_volume" "ESData3Vol3" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   compartment_id      = var.compartment_ocid
   size_in_gbs         = var.DataVolSize
   display_name        = "ESData3Vol3"

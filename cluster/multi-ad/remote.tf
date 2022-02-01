@@ -1,15 +1,26 @@
-## Copyright (c) 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 data "template_file" "setup_esbootstrap" {
+  depends_on = [oci_core_instance.ESMasterNode1, oci_core_instance.ESMasterNode2, oci_core_instance.ESMasterNode3, oci_core_instance.ESDataNode1, oci_core_instance.ESDataNode2, oci_core_instance.ESDataNode3, oci_core_instance.ESDataNode4]
+  
   template = file(var.ESBootStrap)
 
   vars = {
-    elasticsearch_download_url  = var.elasticsearch_download_url
-    kibana_download_url         = var.kibana_download_url
-    ESDataPort                  = var.ESDataPort
-    ESDataPort2                 = var.ESDataPort2
-    KibanaPort                  = var.KibanaPort
+    elasticsearch_download_url      = var.elasticsearch_download_url
+    kibana_download_url             = var.kibana_download_url
+    elasticsearch_download_version  = var.elasticsearch_download_version
+    kibana_download_version         = var.kibana_download_version
+    ESDataPort                      = var.ESDataPort
+    ESDataPort2                     = var.ESDataPort2
+    KibanaPort                      = var.KibanaPort
+    esmasternode1_private_ip        = data.oci_core_vnic.ESMasterNode1Vnic.private_ip_address
+    esmasternode2_private_ip        = data.oci_core_vnic.ESMasterNode2Vnic.private_ip_address
+    esmasternode3_private_ip        = data.oci_core_vnic.ESMasterNode3Vnic.private_ip_address
+    esdatanode1_private_ip          = data.oci_core_vnic.ESDataNode1Vnic.private_ip_address 
+    esdatanode2_private_ip          = data.oci_core_vnic.ESDataNode2Vnic.private_ip_address
+    esdatanode3_private_ip          = data.oci_core_vnic.ESDataNode3Vnic.private_ip_address
+    esdatanode4_private_ip          = data.oci_core_vnic.ESDataNode4Vnic.private_ip_address
   }
 }
 

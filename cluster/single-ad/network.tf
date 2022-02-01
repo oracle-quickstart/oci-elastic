@@ -1,4 +1,4 @@
-## Copyright © 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 
@@ -156,9 +156,8 @@ resource "oci_core_security_list" "BastionSecList" {
   defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
-resource "oci_core_subnet" "LBSubnetAD1" {
-  availability_domain = ""
-  cidr_block          = var.LBSubnetAD1CIDR
+resource "oci_core_subnet" "LBSubnet" {
+  cidr_block          = var.LBSubnetCIDR
   display_name        = "LB-Subnet"
   compartment_id      = var.compartment_ocid
   vcn_id              = oci_core_virtual_network.OCI_ES_VCN.id
@@ -170,25 +169,23 @@ resource "oci_core_subnet" "LBSubnetAD1" {
 }
 
 
-resource "oci_core_subnet" "PrivSubnetAD1" {
-  availability_domain = ""
-  cidr_block          = var.PrivSubnetAD1CIDR
-  display_name        = "Private-Subnet"
-  compartment_id      = var.compartment_ocid
-  vcn_id              = oci_core_virtual_network.OCI_ES_VCN.id
-  route_table_id      = oci_core_route_table.OCI_ES_RTB.id
-  security_list_ids   = [oci_core_security_list.PrivSecList.id]
-  dhcp_options_id     = oci_core_virtual_network.OCI_ES_VCN.default_dhcp_options_id
-  prohibit_public_ip_on_vnic  = "true"
-  dns_label = "privatenet"
+resource "oci_core_subnet" "PrivSubnet" {
+  cidr_block                 = var.PrivSubnetCIDR
+  display_name               = "Private-Subnet"
+  compartment_id             = var.compartment_ocid
+  vcn_id                     = oci_core_virtual_network.OCI_ES_VCN.id
+  route_table_id             = oci_core_route_table.OCI_ES_RTB.id
+  security_list_ids          = [oci_core_security_list.PrivSecList.id]
+  dhcp_options_id            = oci_core_virtual_network.OCI_ES_VCN.default_dhcp_options_id
+  prohibit_public_ip_on_vnic = "true"
+  dns_label                  = "privatenet"
   defined_tags = {"${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 
-resource "oci_core_subnet" "BastionSubnetAD1" {
-  availability_domain = ""
-  cidr_block          = var.BastSubnetAD1CIDR
-  display_name        = "BastionSubnetAD1"
+resource "oci_core_subnet" "BastionSubnet" {
+  cidr_block          = var.BastSubnetCIDR
+  display_name        = "BastionSubnet"
   compartment_id      = var.compartment_ocid
   vcn_id              = oci_core_virtual_network.OCI_ES_VCN.id
   route_table_id      = oci_core_route_table.OCI_PUB_RTB.id
