@@ -122,13 +122,13 @@ variables:
     visible: true
     title: "Instance OS version"
     description: "An Operating System version that determines the operating system version for your Elasticsearch and Kibana host."
-    default: "7.9"
+    default: "8"
     enum:
-      - "7.9"  
+      - "8"  
 
   instance_shape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard.E3.Flex"
+    default: "VM.Standard.E4.Flex"
     title: "ELK Instance Shape"
     description: "ELK Instance Shape"
     required: false
