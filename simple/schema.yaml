@@ -89,7 +89,7 @@ variables:
     required: true
     visibile: true
 
-  availablity_domain_name:
+  availability_domain_name:
     title: "Availability Domain Name"
     description: "Availability Domain where you deploy your Elasticsearch and Kibana"
     type: oci:identity:availabilitydomain:name
