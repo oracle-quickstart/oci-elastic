@@ -1,5 +1,5 @@
-# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
-# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+## Copyright (c) 2022, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 title: "Deploy Elasticsearch and Kibana in OCI"
 description: "Deploy cluster configuration (single-ad) of Elasticsearch and Kibana in Oracle Cloud Infrastructure."
@@ -21,12 +21,13 @@ variableGroups:
   - kibana_download_url
   - create_timeout
   - volume_attachment_attachment_type
+  - availability_domain_number
 
 - title: "Required Configuration"
   visible: true  
   variables:
   - compartment_ocid
-  - availablity_domain_name
+  - availability_domain_name
   - show_advanced
 
 - title: "Compute Optional Configuration"
@@ -55,9 +56,9 @@ variableGroups:
         - show_advanced
   variables:
   - VCN-CIDR
-  - BastSubnetAD1CIDR
-  - PrivSubnetAD1CIDR
-  - LBSubnetAD1CIDR
+  - BastSubnetCIDR
+  - PrivSubnetCIDR
+  - LBSubnetCIDR
 
 - title: "Load Balancer Optional Configuration"
   visible: 
@@ -78,6 +79,8 @@ variableGroups:
   - ESDataPort
   - ESDataPort2
   - ESBootStrap
+  - elasticsearch_download_version
+  - kibana_download_version
 
 
 variables:
@@ -104,7 +107,7 @@ variables:
     required: true
     visibile: true
 
-  availablity_domain_name:
+  availability_domain_name:
     type: oci:identity:availabilitydomain:name
     required: true
     visibile: true
@@ -144,13 +147,13 @@ variables:
     visible: true
     title: "Instance OS version"
     description: "An Operating System version that determines the operating system version for your Elasticsearch and Kibana hosts."
-    default: "7.9"
+    default: "8"
     enum:
-      - "7.9"  
+      - "8"  
 
   BastionShape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard.E3.Flex"
+    default: "VM.Standard.E4.Flex"
     title: "Bastion Shape"
     description: "Bastion Host Shape"
     required: false
@@ -175,6 +178,9 @@ variables:
           - eq:
             - BastionShape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - BastionShape
+            - "VM.Standard.A1.Flex"
 
   Bastion_Flex_Shape_Memory:
     type: number
@@ -194,10 +200,13 @@ variables:
           - eq:
             - BastionShape
             - "VM.Standard.E4.Flex"
+          - eq:
+            - BastionShape
+            - "VM.Standard.A1.Flex"
 
   MasterNodeShape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard.E3.Flex"
+    default: "VM.Standard.E4.Flex"
     title: "ESMaster Node Shape"
     description: "ElasticSearch Master Node Shape"
     required: false
@@ -222,6 +231,9 @@ variables:
           - eq:
             - MasterNodeShape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - MasterNodeShape
+            - "VM.Standard.A1.Flex"
 
   MasterNode_Flex_Shape_Memory:
     type: number
@@ -241,6 +253,9 @@ variables:
           - eq:
             - MasterNodeShape
             - "VM.Standard.E4.Flex"
+          - eq:
+            - MasterNodeShape
+            - "VM.Standard.A1.Flex"
 
   DataNodeShape:
     type: oci:core:instanceshape:name
@@ -317,29 +332,29 @@ variables:
     title: "VCN CIDR"
     description: "A single, contiguous IPv4 CIDR block of your choice for the VCN"
 
-  BastSubnetAD1CIDR:
+  BastSubnetCIDR:
     type: string
     required: false
     default: "192.168.0.0/28"
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-    title: "Bastion Subnet AD1 CIDR"
-    description: "Bastion Subnet AD1 CIDR"
+    title: "Bastion Subnet CIDR"
+    description: "Bastion Subnet CIDR"
 
-  PrivSubnetAD1CIDR:     
+  PrivSubnetCIDR:     
     type: string
     required: false
     default: "192.168.0.16/28"
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
-    title: "Private Subnet AD1 CIDR"
-    description: "Private Subnet AD1 CIDR"
+    title: "Private Subnet CIDR"
+    description: "Private Subnet CIDR"
 
-  LBSubnetAD1CIDR:
+  LBSubnetCIDR:
     type: string
     required: false
     default: "192.168.0.64/28"
     pattern: "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\\/(3[0-2]|[1-2]?[0-9])$"
     title: "LB Subnet AD1 CIDR"
-    description: "LB Subnet AD1 CIDR"
+    description: "LB Subnet CIDR"
 
   lb_shape:
     type: enum
@@ -452,6 +467,26 @@ variables:
     multipleOf: 1
     default: 9300
     required: false
+
+  elasticsearch_download_version:
+    type: enum
+    required: false
+    visible: true
+    title: "Elasticsearch version"
+    description: "Choose the Elasticsearch version to install."
+    default: "7.16.3"
+    enum:
+      - "7.16.3"
+
+  kibana_download_version:
+    type: enum
+    required: false
+    visible: true
+    title: "Kibana version"
+    description: "Choose the Kibana version to install."
+    default: "7.16.3"
+    enum:
+      - "7.16.3"
 
   create_timeout:
     type: string

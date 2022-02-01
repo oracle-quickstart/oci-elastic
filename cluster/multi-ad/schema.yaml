@@ -1,5 +1,5 @@
-# Copyright (c) 2020, Oracle and/or its affiliates. All rights reserved.
-# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+## Copyright (c) 2022, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 title: "Deploy Elasticsearch and Kibana in OCI"
 description: "Deploy cluster configuration (multi-ad) of Elasticsearch and Kibana in Oracle Cloud Infrastructure."
@@ -80,7 +80,8 @@ variableGroups:
   - ESDataPort
   - ESDataPort2
   - ESBootStrap
-
+  - elasticsearch_download_version
+  - kibana_download_version
 
 variables:
 
@@ -137,14 +138,13 @@ variables:
     visible: true
     title: "Instance OS version"
     description: "An Operating System version that determines the operating system version for your Elasticsearch and Kibana hosts."
-    default: "7.9"
+    default: "8"
     enum:
-      - "8"
-      - "7.9"  
+      - "8" 
 
   BastionShape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard.E3.Flex"
+    default: "VM.Standard.E4.Flex"
     title: "Bastion Shape"
     description: "Bastion Host Shape"
     required: false
@@ -169,6 +169,9 @@ variables:
           - eq:
             - BastionShape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - BastionShape
+            - "VM.Standard.A1.Flex"
 
   Bastion_Flex_Shape_Memory:
     type: number
@@ -188,10 +191,13 @@ variables:
           - eq:
             - BastionShape
             - "VM.Standard.E4.Flex"
+          - eq:
+            - BastionShape
+            - "VM.Standard.A1.Flex"
 
   MasterNodeShape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard.E3.Flex"
+    default: "VM.Standard.E4.Flex"
     title: "ESMaster Node Shape"
     description: "ElasticSearch Master Node Shape"
     required: false
@@ -216,6 +222,9 @@ variables:
           - eq:
             - MasterNodeShape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - MasterNodeShape
+            - "VM.Standard.A1.Flex"
 
   MasterNode_Flex_Shape_Memory:
     type: number
@@ -235,10 +244,13 @@ variables:
           - eq:
             - MasterNodeShape
             - "VM.Standard.E4.Flex"
+          - eq:
+            - MasterNodeShape
+            - "VM.Standard.A1.Flex"
 
   DataNodeShape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard.E3.Flex"
+    default: "VM.Standard.E4.Flex"
     title: "ESData Node Shape"
     description: "ElasticSearch Data Node Shape"
     required: false
@@ -263,6 +275,9 @@ variables:
           - eq:
             - DataNodeShape 
             - "VM.Standard.E4.Flex"
+          - eq:
+            - DataNodeShape 
+            - "VM.Standard.A1.Flex"
 
   DataNode_Flex_Shape_Memory:
     type: number
@@ -282,6 +297,9 @@ variables:
           - eq:
             - DataNodeShape
             - "VM.Standard.E4.Flex"
+          - eq:
+            - DataNodeShape 
+            - "VM.Standard.A1.Flex"
 
   BootVolSize:
     type: number
@@ -470,6 +488,26 @@ variables:
     multipleOf: 1
     default: 9300
     required: false
+
+  elasticsearch_download_version:
+    type: enum
+    required: false
+    visible: true
+    title: "Elasticsearch version"
+    description: "Choose the Elasticsearch version to install."
+    default: "7.16.3"
+    enum:
+      - "7.16.3"
+
+  kibana_download_version:
+    type: enum
+    required: false
+    visible: true
+    title: "Kibana version"
+    description: "Choose the Kibana version to install."
+    default: "7.16.3"
+    enum:
+      - "7.16.3"
 
   create_timeout:
     type: string

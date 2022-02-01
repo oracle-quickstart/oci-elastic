@@ -1,4 +1,4 @@
-## Copyright (c) 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 variable "tenancy_ocid" {}
@@ -10,11 +10,11 @@ variable "compartment_ocid" {}
 
 variable "release" {
   description = "Reference Architecture Release (OCI Architecture Center)"
-  default     = "1.1"
+  default     = "2.0"
 }
 
 variable "BastionShape" {
-  default = "VM.Standard.E3.Flex"
+  default = "VM.Standard.E4.Flex"
 }
 
 variable "Bastion_Flex_Shape_OCPUS" {
@@ -77,7 +77,7 @@ variable "instance_os" {
 
 variable "linux_os_version" {
   description = "Operating system version for all Linux instances"
-  default     = "7.9"
+  default     = "8"
 }
 
 variable "VCN-CIDR" {
@@ -117,15 +117,20 @@ variable "BastionBootStrap" {
 }
 
 variable "elasticsearch_download_url" {
-  default = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.7.1.rpm"
-#  default = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.0-x86_64.rpm"
+  default = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch"
+}
+
+variable "elasticsearch_download_version" {
+  default = "7.16.3"
 }
 
 variable "kibana_download_url" {
-#  default = "https://artifacts.elastic.co/downloads/kibana/kibana-7.10.0-x86_64.rpm"
-  default = "https://artifacts.elastic.co/downloads/kibana/kibana-6.7.1-x86_64.rpm"
+  default = "https://artifacts.elastic.co/downloads/kibana/kibana"
 }
 
+variable "kibana_download_version" {
+  default = "7.16.3"
+}
 
 variable "backend_set_health_checker_interval_ms" {
   default = "15000"

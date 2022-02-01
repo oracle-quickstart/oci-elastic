@@ -1,9 +1,9 @@
-## Copyright © 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 
 resource "oci_core_instance" "BastionHost" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "BastionHost"
@@ -18,7 +18,7 @@ resource "oci_core_instance" "BastionHost" {
   }
 
   create_vnic_details {
-    subnet_id              = oci_core_subnet.BastionSubnetAD1.id
+    subnet_id              = oci_core_subnet.BastionSubnet.id
     skip_source_dest_check = true
   }
 
@@ -40,7 +40,7 @@ resource "oci_core_instance" "BastionHost" {
 }
 
 resource "oci_core_instance" "ESMasterNode1" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESMasterNode1"
@@ -55,7 +55,7 @@ resource "oci_core_instance" "ESMasterNode1" {
   }
 
   create_vnic_details {
-    subnet_id        = oci_core_subnet.PrivSubnetAD1.id
+    subnet_id        = oci_core_subnet.PrivSubnet.id
     assign_public_ip = false
   }
 
@@ -78,7 +78,7 @@ resource "oci_core_instance" "ESMasterNode1" {
 }
 
 resource "oci_core_instance" "ESMasterNode2" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[1]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESMasterNode2"
@@ -93,7 +93,7 @@ resource "oci_core_instance" "ESMasterNode2" {
   }
 
   create_vnic_details {
-    subnet_id        = oci_core_subnet.PrivSubnetAD1.id
+    subnet_id        = oci_core_subnet.PrivSubnet.id
     assign_public_ip = false
   }
 
@@ -116,7 +116,7 @@ resource "oci_core_instance" "ESMasterNode2" {
 }
 
 resource "oci_core_instance" "ESMasterNode3" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[2]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESMasterNode3"
@@ -131,7 +131,7 @@ resource "oci_core_instance" "ESMasterNode3" {
   }
 
   create_vnic_details {
-    subnet_id        = oci_core_subnet.PrivSubnetAD1.id
+    subnet_id        = oci_core_subnet.PrivSubnet.id
     assign_public_ip = false
   }
 
@@ -154,7 +154,7 @@ resource "oci_core_instance" "ESMasterNode3" {
 }
 
 resource "oci_core_instance" "ESDataNode1" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[0]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESDataNode1"
@@ -169,7 +169,7 @@ resource "oci_core_instance" "ESDataNode1" {
   }
 
   create_vnic_details {
-    subnet_id        = oci_core_subnet.PrivSubnetAD1.id
+    subnet_id        = oci_core_subnet.PrivSubnet.id
     assign_public_ip = false
   }
 
@@ -192,7 +192,7 @@ resource "oci_core_instance" "ESDataNode1" {
 }
 
 resource "oci_core_instance" "ESDataNode2" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[1]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESDataNode2"
@@ -209,7 +209,7 @@ resource "oci_core_instance" "ESDataNode2" {
   depends_on          = [oci_core_instance.BastionHost]
 
   create_vnic_details {
-    subnet_id        = oci_core_subnet.PrivSubnetAD1.id
+    subnet_id        = oci_core_subnet.PrivSubnet.id
     assign_public_ip = false
   }
 
@@ -232,7 +232,7 @@ resource "oci_core_instance" "ESDataNode2" {
 }
 
 resource "oci_core_instance" "ESDataNode3" {
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   fault_domain        = data.oci_identity_fault_domains.FDs.fault_domains[2]["name"]
   compartment_id      = var.compartment_ocid
   display_name        = "ESDataNode3"
@@ -249,7 +249,7 @@ resource "oci_core_instance" "ESDataNode3" {
   depends_on          = [oci_core_instance.BastionHost]
 
   create_vnic_details {
-    subnet_id        = oci_core_subnet.PrivSubnetAD1.id
+    subnet_id        = oci_core_subnet.PrivSubnet.id
     assign_public_ip = false
   }
 

@@ -1,9 +1,14 @@
-## Copyright © 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
+# Get list of availability domains
+data "oci_identity_availability_domains" "ADs" {
+  compartment_id = var.tenancy_ocid
+}
 
 data "oci_identity_fault_domains" "FDs" {
     #Required
-    availability_domain = var.availablity_domain_name
+    availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
     compartment_id = var.compartment_ocid
 }
 
@@ -11,7 +16,7 @@ data "oci_identity_fault_domains" "FDs" {
 # Gets a list of vNIC attachments on the bastion host
 data "oci_core_vnic_attachments" "BastionVnics" {
   compartment_id      = var.compartment_ocid
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   instance_id         = oci_core_instance.BastionHost.id
 }
 
@@ -23,14 +28,14 @@ data "oci_core_vnic" "BastionVnic" {
 # Get the Private of bastion host
 data "oci_core_private_ips" "BastionPrivateIPs" {
   ip_address = data.oci_core_vnic.BastionVnic.private_ip_address
-  subnet_id  = oci_core_subnet.BastionSubnetAD1.id
+  subnet_id  = oci_core_subnet.BastionSubnet.id
 }
 
 
 # Gets a list of vNIC attachments on the ESMasterNode1 
 data "oci_core_vnic_attachments" "ESMasterNode1Vnics" {
   compartment_id      = var.compartment_ocid
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   instance_id         = oci_core_instance.ESMasterNode1.id
 }
 
@@ -43,7 +48,7 @@ data "oci_core_vnic" "ESMasterNode1Vnic" {
 # Gets a list of vNIC attachments on the ESMasterNode2 
 data "oci_core_vnic_attachments" "ESMasterNode2Vnics" {
   compartment_id      = var.compartment_ocid
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   instance_id         = oci_core_instance.ESMasterNode2.id
 }
 
@@ -55,7 +60,7 @@ data "oci_core_vnic" "ESMasterNode2Vnic" {
 # Gets a list of vNIC attachments on the ESMasterNode3 
 data "oci_core_vnic_attachments" "ESMasterNode3Vnics" {
   compartment_id      = var.compartment_ocid
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   instance_id         = oci_core_instance.ESMasterNode3.id
 }
 
@@ -67,7 +72,7 @@ data "oci_core_vnic" "ESMasterNode3Vnic" {
 # Gets a list of vNIC attachments on the ESDataNode1 
 data "oci_core_vnic_attachments" "ESDataNode1Vnics" {
   compartment_id      = var.compartment_ocid
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   instance_id         = oci_core_instance.ESDataNode1.id
 }
 
@@ -80,7 +85,7 @@ data "oci_core_vnic" "ESDataNode1Vnic" {
 # Gets a list of vNIC attachments on the ESDataNode2 
 data "oci_core_vnic_attachments" "ESDataNode2Vnics" {
   compartment_id      = var.compartment_ocid
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   instance_id         = oci_core_instance.ESDataNode2.id
 }
 
@@ -93,7 +98,7 @@ data "oci_core_vnic" "ESDataNode2Vnic" {
 # Gets a list of vNIC attachments on the ESDataNode3 
 data "oci_core_vnic_attachments" "ESDataNode3Vnics" {
   compartment_id      = var.compartment_ocid
-  availability_domain = var.availablity_domain_name
+  availability_domain = var.availability_domain_name == "" ? data.oci_identity_availability_domains.ADs.availability_domains[var.availability_domain_number]["name"] : var.availability_domain_name
   instance_id         = oci_core_instance.ESDataNode3.id
 }
 

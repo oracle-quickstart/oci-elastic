@@ -1,4 +1,4 @@
-## Copyright © 2020, Oracle and/or its affiliates. 
+## Copyright (c) 2022, Oracle and/or its affiliates. 
 ## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
 
 resource "oci_load_balancer_load_balancer" "ES-LB" {
@@ -14,7 +14,7 @@ resource "oci_load_balancer_load_balancer" "ES-LB" {
     }
   }
   
-  subnet_ids     = [oci_core_subnet.LBSubnetAD1.id]
+  subnet_ids     = [oci_core_subnet.LBSubnet.id]
   is_private     = "false"
   depends_on = [
     oci_core_instance.ESDataNode1,
