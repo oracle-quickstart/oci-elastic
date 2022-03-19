@@ -22,7 +22,7 @@ resource "oci_core_instance" "BastionHost" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = data.template_cloudinit_config.cloud_init_bastion.rendered
+    user_data = data.cloudinit_config.cloud_init_bastion.rendered
   }
 
   source_details {
@@ -60,7 +60,7 @@ resource "oci_core_instance" "ESMasterNode1" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = data.template_cloudinit_config.cloud_init.rendered
+    user_data = data.cloudinit_config.cloud_init.rendered
   }
 
   source_details {
@@ -99,7 +99,7 @@ resource "oci_core_instance" "ESMasterNode2" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = data.template_cloudinit_config.cloud_init.rendered
+    user_data = data.cloudinit_config.cloud_init.rendered
   }
 
   source_details {
@@ -138,7 +138,7 @@ resource "oci_core_instance" "ESMasterNode3" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = data.template_cloudinit_config.cloud_init.rendered
+    user_data = data.cloudinit_config.cloud_init.rendered
   }
 
   source_details {
@@ -177,7 +177,7 @@ resource "oci_core_instance" "ESDataNode1" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = data.template_cloudinit_config.cloud_init.rendered
+    user_data = data.cloudinit_config.cloud_init.rendered
   }
 
   source_details {
@@ -216,7 +216,7 @@ resource "oci_core_instance" "ESDataNode2" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = data.template_cloudinit_config.cloud_init.rendered
+    user_data = data.cloudinit_config.cloud_init.rendered
   }
 
   source_details {
@@ -255,7 +255,7 @@ resource "oci_core_instance" "ESDataNode3" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = data.template_cloudinit_config.cloud_init.rendered
+    user_data = data.cloudinit_config.cloud_init.rendered
   }
 
   source_details {
@@ -294,7 +294,7 @@ resource "oci_core_instance" "ESDataNode4" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    user_data = data.template_cloudinit_config.cloud_init.rendered
+    user_data = data.cloudinit_config.cloud_init.rendered
   }
 
   source_details {
